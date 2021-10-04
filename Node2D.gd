@@ -44,14 +44,10 @@ func setpos(obj, point, angle) -> void:
   pass
 
 func _process(delta):
-#  if angle == 360:
-#    angle = 0
-#  elif angle > 360:
-#    angle = abs(360 - angle)
-#  angle += step * delta * speed
-#  setpos(sprite, center.position, angle)
-
-  rotateAround(sprite, center.position, -25 * delta)
-#  rot2(sprite, center.position, -25 * delta)
-#  rot(sprite, center, -25 * delta)
+  if angle == 360:
+    angle = 0
+  elif angle > 360:
+    angle = abs(360 - angle)
+  angle += step * delta * speed
+  setpos(sprite, center.position, angle)
   pass
