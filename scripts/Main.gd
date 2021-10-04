@@ -11,4 +11,4 @@ func _ready() -> void:
   pass
 
 func _process(delta: float) -> void:
-  crosshair.rotate_around(lock.center.global_position, step * speed * delta)
+  crosshair.set_rotation_around(lock.center.global_position, step * speed * delta)

@@ -14,7 +14,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/Lock.gd"
 }, {
-"base": "Sprite",
+"base": "",
 "class": "Target",
 "language": "GDScript",
 "path": "res://scripts/Target.gd"
