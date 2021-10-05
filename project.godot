@@ -9,17 +9,23 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "",
+"class": "Crosshair",
+"language": "GDScript",
+"path": "res://scripts/Crosshair.gd"
+}, {
 "base": "HBoxContainer",
 "class": "Lock",
 "language": "GDScript",
 "path": "res://scripts/Lock.gd"
 }, {
-"base": "",
+"base": "Reference",
 "class": "Target",
 "language": "GDScript",
 "path": "res://scripts/Target.gd"
 } ]
 _global_script_class_icons={
+"Crosshair": "",
 "Lock": "",
 "Target": ""
 }

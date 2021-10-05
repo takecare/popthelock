@@ -1,31 +1,20 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://sprites/crosshair.png" type="Texture" id=1]
-[ext_resource path="res://sprites/target.png" type="Texture" id=2]
+[ext_resource path="res://scenes/Crosshair.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/Target.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scripts/Main.gd" type="Script" id=3]
-[ext_resource path="res://scripts/Target.gd" type="Script" id=4]
 [ext_resource path="res://scenes/Lock.tscn" type="PackedScene" id=5]
-[ext_resource path="res://scripts/Crosshair.gd" type="Script" id=6]
 
 [node name="Main" type="Node2D"]
 script = ExtResource( 3 )
 
 [node name="Lock" parent="." instance=ExtResource( 5 )]
+margin_top = 160.0
+margin_bottom = 597.0
 
-[node name="Target" type="Sprite" parent="."]
+[node name="Target" parent="." instance=ExtResource( 2 )]
+scale = Vector2( 0.15, 0.15 )
+
+[node name="Crosshair" parent="." instance=ExtResource( 1 )]
 position = Vector2( 360, 72 )
 scale = Vector2( 0.15, 0.15 )
-texture = ExtResource( 2 )
-script = ExtResource( 4 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="Crosshair" type="Sprite" parent="."]
-position = Vector2( 360, 72 )
-scale = Vector2( 0.15, 0.15 )
-texture = ExtResource( 1 )
-script = ExtResource( 6 )
-__meta__ = {
-"_edit_group_": true
-}
