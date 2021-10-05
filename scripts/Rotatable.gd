@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends Area2D
 
 func set_rotation_around(point: Vector2, angle: float):
   var rot = deg2rad(angle)

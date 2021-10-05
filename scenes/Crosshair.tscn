@@ -6,7 +6,7 @@
 [sub_resource type="CircleShape2D" id=1]
 radius = 40.1995
 
-[node name="Crosshair" type="KinematicBody2D"]
+[node name="Crosshair" type="Area2D"]
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
