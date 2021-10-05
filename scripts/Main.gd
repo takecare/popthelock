@@ -19,3 +19,8 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
   crosshair.set_rotation_around(lock.center.global_position, step * speed * delta * crosshairRotationDirection)
+
+func _physics_process(_delta: float) -> void:
+  if Input.is_action_just_pressed("click"):
+    crosshairRotationDirection *= -1
+
