@@ -8,6 +8,8 @@ onready var lock: Lock = $Lock
 onready var target: Target = $Target
 onready var crosshair: Crosshair = $Crosshair
 
+var crosshairRotationDirection = -1 # 1=CW; -1=CCW
+
 # should target and crosshair be children of lock?
 func _ready() -> void:
   target.position.x = lock.center.global_position.x
@@ -16,4 +18,4 @@ func _ready() -> void:
   crosshair.position.y = target.global_position.y
 
 func _process(delta: float) -> void:
-  crosshair.set_rotation_around(lock.center.global_position, step * speed * delta)
+  crosshair.set_rotation_around(lock.center.global_position, step * speed * delta * crosshairRotationDirection)
