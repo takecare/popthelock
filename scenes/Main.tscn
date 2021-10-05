@@ -9,12 +9,13 @@
 script = ExtResource( 3 )
 
 [node name="Lock" parent="." instance=ExtResource( 5 )]
-margin_top = 160.0
-margin_bottom = 597.0
+margin_top = 384.0
+margin_bottom = 821.0
 
 [node name="Target" parent="." instance=ExtResource( 2 )]
+position = Vector2( 360, 456 )
 scale = Vector2( 0.15, 0.15 )
 
 [node name="Crosshair" parent="." instance=ExtResource( 1 )]
-position = Vector2( 360, 72 )
+position = Vector2( 368, 456 )
 scale = Vector2( 0.15, 0.15 )

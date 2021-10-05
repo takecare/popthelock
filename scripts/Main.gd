@@ -8,8 +8,6 @@ onready var lock: Lock = $Lock
 onready var target: Target = $Target
 onready var crosshair: Crosshair = $Crosshair
 
-# 360,72, s=0.15
-
 # should target and crosshair be children of lock?
 func _ready() -> void:
   target.position.x = lock.center.global_position.x
