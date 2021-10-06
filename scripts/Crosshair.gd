@@ -17,6 +17,10 @@ func _physics_process(_delta: float) -> void:
     emit_signal("on_target_missed")
 
 # TODO how to determine how much both areas overlap?
+# A: consider dividing the current collision shape into at least 3, whilst maintaining
+# the same position - i.e. the 3 new shapes should form the current one. this way we
+# can say that it's only a hit if the crosshair is overlapping all 3 areas (or 2)
+# instead of just one
 
 func _on_Target_area_entered(_area: Area2D) -> void:
   isInside = true
