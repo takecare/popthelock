@@ -7,9 +7,6 @@ onready var crosshairName = crosshair.name if crosshair != null else ""
 func _ready() -> void:
   pass
 
-#func _process(delta: float) -> void:
-#  pass
-
 func _on_area_entered(area: Area2D) -> void:
   if area.name == crosshairName:
     print(area.name)

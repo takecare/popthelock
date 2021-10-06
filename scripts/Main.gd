@@ -21,6 +21,14 @@ func _process(delta: float) -> void:
   crosshair.set_rotation_around(lock.center.global_position, step * speed * delta * crosshairRotationDirection)
 
 func _physics_process(_delta: float) -> void:
-  if Input.is_action_just_pressed("click"):
-    crosshairRotationDirection *= -1
+  pass
 
+func _on_Crosshair_target_hit() -> void:
+  # TODO incease score, speed
+  print("hit")
+  crosshairRotationDirection *= -1
+
+func _on_Crosshair_target_missed() -> void:
+  # TODO die
+  print("miss")
+  crosshairRotationDirection = -1 if rand_range(0, 1) > 0.5 else 1
