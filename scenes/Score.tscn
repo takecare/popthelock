@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scripts/Score.gd" type="Script" id=1]
+
+[node name="Score" type="Label"]
+margin_left = 340.0
+margin_top = 596.0
+margin_right = 380.0
+margin_bottom = 610.0
+rect_clip_content = true
+text = "999"
+align = 1
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
