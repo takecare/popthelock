@@ -25,7 +25,7 @@ onready var crosshair: Crosshair = $Crosshair
 
 onready var score: Score = $Score
 
-onready var lockPos: Vector2 = lock.center.global_position
+onready var lockCenter: Vector2 = lock.center.global_position
 
 var crosshairRotationDirection = -1 # 1=CW; -1=CCW
 var level = 0
@@ -37,12 +37,12 @@ func _ready() -> void:
   target.position.y = lock.body.rect_global_position.y + yOffset #lock.body.rect_size.y / 2
   #target.position.y = lock.center.global_position.y - lock.body.rect_size.y / 2 + yOffset
   crosshair.set_position(target.global_position)
-  score.center_on(lockPos)
+  score.center_on(lockCenter)
   randomize()
 
 
 func _process(delta: float) -> void:
-  crosshair.set_rotation_around(lockPos, step * speed * delta * crosshairRotationDirection)
+  crosshair.set_rotation_around(lockCenter, step * speed * delta * crosshairRotationDirection)
 
 
 func _physics_process(_delta: float) -> void:
@@ -55,16 +55,22 @@ func _on_Crosshair_target_hit() -> void:
   increase_level()
   crosshairRotationDirection *= -1
 
+var rot = 0 #temporary
+
 func increase_level() -> void:
   level += 1
-  target.set_rotation_around(lockPos, randi() % 360 + 1)
+  rot += 10
+  target.set_rotation_around(lockCenter, rot) #randi() % 360
 
 
 func _on_Crosshair_target_missed() -> void:
   #crosshairRotationDirection = -1 if rand_range(0, 1) > 0.5 else 1
+  print("> MISSED!")
   reset_target()
 
 
 func reset_target() -> void:
   score.reset()
-  target.set_rotation_around(lockPos, 0)
+  target.set_rotation_around(lockCenter, 0)
+  # ^ it seems that rotation is cumulative so when we call set_rotation_arount(x)
+  # we're just adding to the rotation that is already there

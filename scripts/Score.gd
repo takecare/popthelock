@@ -3,7 +3,7 @@ class_name Score extends Label
 export(int) var score = 0
 
 func _ready() -> void:
-  pass # Replace with function body.
+  text = str(score)
 
 func center_on(point: Vector2):
   set_global_position(
@@ -13,7 +13,9 @@ func center_on(point: Vector2):
 func increase():
   # TODO animate (quick scale+fade)
   score += 1
+  text = str(score)
 
 func reset():
   # TODO animate counting down until 0
   score = 0
+  text = str(score)
