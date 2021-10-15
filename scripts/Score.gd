@@ -3,7 +3,6 @@ class_name Score extends Node2D
 export(int) var score = 0
 
 onready var currentScoreLayer: ScoreLayer = $CurrentScoreLayer
-onready var animationPlayer: AnimationPlayer = $AnimationPlayer
 
 func _ready() -> void:
   #text = str(score)
@@ -22,12 +21,15 @@ func increase():
 func reset():
   # TODO animate counting down until 0
   score = 0
+  currentScoreLayer.reset()
   pass
 
 func _unhandled_key_input(event: InputEventKey) -> void:
   if event.echo || event.pressed: return
   if event.scancode == KEY_G:
-    animationPlayer.play("Increase")
+    currentScoreLayer.disappear()
+  elif event.scancode == KEY_H:
+    currentScoreLayer.reset()
   elif event.scancode == KEY_F:
     currentScoreLayer.increase()
   get_tree().set_input_as_handled()
