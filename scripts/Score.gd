@@ -32,4 +32,7 @@ func _unhandled_key_input(event: InputEventKey) -> void:
     currentScoreLayer.reset()
   elif event.scancode == KEY_F:
     currentScoreLayer.increase()
+  elif event.scancode == KEY_T:
+    $Tween.interpolate_property($CurrentScoreLayer/HBoxContainer, "rect_scale", Vector2(1,1), Vector2(0,0), 2, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
+    $Tween.start()
   get_tree().set_input_as_handled()
