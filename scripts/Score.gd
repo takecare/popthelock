@@ -1,15 +1,15 @@
 class_name Score extends Node2D
 
-export(int) var score = 0
+export(int) var score = 23
 
 onready var currentScoreLayer: ScoreLayer = $CurrentScoreLayer
 
 func _ready() -> void:
   #text = str(score)
-  currentScoreLayer.set_score(0)
+  currentScoreLayer.set_score(score)
   pass
 
-func center_on(point: Vector2):
+func center_on(_point: Vector2):
   #set_global_position(Vector2(point.x - rect_size.x / 2, point.y - rect_size.y / 2))
   pass
 
@@ -33,6 +33,8 @@ func _unhandled_key_input(event: InputEventKey) -> void:
   elif event.scancode == KEY_F:
     currentScoreLayer.increase()
   elif event.scancode == KEY_T:
+     # warning-ignore:unsafe_method_access
     $Tween.interpolate_property($CurrentScoreLayer/HBoxContainer, "rect_scale", Vector2(1,1), Vector2(0,0), 2, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
+     # warning-ignore:unsafe_method_access
     $Tween.start()
   get_tree().set_input_as_handled()

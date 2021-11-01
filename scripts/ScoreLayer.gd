@@ -3,10 +3,6 @@ class_name ScoreLayer extends CenterContainer
 export(int) var score = 0 setget set_score,get_score
 
 onready var animationPlayer: AnimationPlayer = $AnimationPlayer
-onready var hBoxContainer: HBoxContainer = $HBoxContainer
-#onready var digit1: TextureRect = $HBoxContainer/Digit1
-#onready var digit2: TextureRect = $HBoxContainer/Digit2
-#onready var digit3: TextureRect = $HBoxContainer/Digit3
 
 # we'll have 2 ScoreLayers - does the engine share these sprites or does it load them twice?
 const sprites = [
@@ -24,6 +20,12 @@ const sprites = [
 
 func _ready() -> void:
   offset_pivot()
+
+func _notification(what):
+  if what == NOTIFICATION_SORT_CHILDREN:
+    print("> set pivot offset")
+    # warning-ignore:unsafe_method_access
+    $HBoxContainer.set_pivot_offset(rect_size/2)
 
 func center_on(point: Vector2):
   set_global_position(
@@ -46,28 +48,36 @@ func reset() -> void:
 
 func offset_pivot():
   # pivot offset on hBoxContainer must be its w/2 and its h/2
-  $HBoxContainer.rect_pivot_offset = $HBoxContainer.rect_size / 2
+  #$HBoxContainer.rect_pivot_offset = $HBoxContainer.rect_size / 2
+  # warning-ignore:unsafe_method_access
+  $HBoxContainer.set_pivot_offset(rect_size/2)
 
 # we have to reference nodes directly as this is called in the score setter,
 # which means this runs before _ready()/onready
 func update():
+  var digit1: TextureRect = $HBoxContainer/Digit1
+  var digit2: TextureRect = $HBoxContainer/Digit2
+  var digit3: TextureRect = $HBoxContainer/Digit3
   var readable = str(score)
   var length = readable.length()
   if length == 1:
-    $HBoxContainer/Digit1.texture = sprites[readable[0].to_int()]
-    $HBoxContainer/Digit1.visible = true
-    $HBoxContainer/Digit2.visible = false
-    $HBoxContainer/Digit3.visible = false
+    digit1.texture = sprites[readable[0].to_int()]
+    digit1.visible = true
+    digit2.visible = false
+    digit3.visible = false
   elif length == 2:
-    $HBoxContainer/Digit1.texture = sprites[readable[0].to_int()]
-    $HBoxContainer/Digit2.texture = sprites[readable[1].to_int()]
-    $HBoxContainer/Digit1.visible = true
-    $HBoxContainer/Digit2.visible = true
-    $HBoxContainer/Digit3.visible = false
+    digit1.texture = sprites[readable[0].to_int()]
+    digit2.texture = sprites[readable[1].to_int()]
+    digit1.visible = true
+    digit2.visible = true
+    digit3.visible = false
   else:
-    $HBoxContainer/Digit1.texture = sprites[readable[0].to_int()]
-    $HBoxContainer/Digit2.texture = sprites[readable[1].to_int()]
-    $HBoxContainer/Digit3.texture = sprites[readable[2].to_int()]
-    $HBoxContainer/Digit1.visible = true
-    $HBoxContainer/Digit2.visible = true
-    $HBoxContainer/Digit3.visible = true
+    digit1.texture = sprites[readable[0].to_int()]
+    digit2.texture = sprites[readable[1].to_int()]
+    digit3.texture = sprites[readable[2].to_int()]
+    digit1.visible = true
+    digit2.visible = true
+    digit3.visible = true
+
+func increase():
+  pass
