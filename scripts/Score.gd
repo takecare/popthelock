@@ -1,28 +1,35 @@
 class_name Score extends Node2D
 
-export(int) var score = 23
+export(int) var score = 0 setget set_score,get_score
 
 onready var currentScoreLayer: ScoreLayer = $CurrentScoreLayer
 
 func _ready() -> void:
-  #text = str(score)
-  currentScoreLayer.set_score(score)
+  #set_score(score)
   pass
 
-func center_on(_point: Vector2):
-  #set_global_position(Vector2(point.x - rect_size.x / 2, point.y - rect_size.y / 2))
-  pass
+func get_score() -> int:
+  return currentScoreLayer.get_score()
+
+
+func set_score(new: int) -> void:
+  if currentScoreLayer == null:
+    return
+  currentScoreLayer.set_score(new)
+
 
 func increase():
   # TODO animate (quick scale+fade)
   score += 1
   pass
 
+
 func reset():
   # TODO animate counting down until 0
   score = 0
   currentScoreLayer.reset()
   pass
+
 
 func _unhandled_key_input(event: InputEventKey) -> void:
   if event.echo || event.pressed: return
@@ -32,9 +39,4 @@ func _unhandled_key_input(event: InputEventKey) -> void:
     currentScoreLayer.reset()
   elif event.scancode == KEY_F:
     currentScoreLayer.increase()
-  elif event.scancode == KEY_T:
-     # warning-ignore:unsafe_method_access
-    $Tween.interpolate_property($CurrentScoreLayer/HBoxContainer, "rect_scale", Vector2(1,1), Vector2(0,0), 2, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
-     # warning-ignore:unsafe_method_access
-    $Tween.start()
   get_tree().set_input_as_handled()

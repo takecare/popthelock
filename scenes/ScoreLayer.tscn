@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://sprites/3.png" type="Texture" id=1]
 [ext_resource path="res://sprites/4.png" type="Texture" id=2]
 [ext_resource path="res://sprites/2.png" type="Texture" id=3]
 [ext_resource path="res://scripts/ScoreLayer.gd" type="Script" id=4]
+[ext_resource path="res://scripts/ScoreHBoxContainer.gd" type="Script" id=5]
 
 [sub_resource type="Animation" id=1]
 resource_name = "Disappear"
@@ -58,7 +59,7 @@ tracks/3/keys = {
 "values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
 }
 
-[node name="CenterContainer" type="CenterContainer"]
+[node name="ScoreLayer" type="CenterContainer"]
 margin_right = 256.0
 margin_bottom = 128.0
 grow_horizontal = 2
@@ -79,6 +80,7 @@ rect_pivot_offset = Vector2( 118, 57 )
 size_flags_horizontal = 0
 size_flags_vertical = 0
 alignment = 1
+script = ExtResource( 5 )
 
 [node name="Digit1" type="TextureRect" parent="HBoxContainer"]
 margin_right = 69.0
