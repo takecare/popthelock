@@ -23,6 +23,7 @@ func _notification(what):
       layout_children_packed()
     elif layout_mode == LayoutMode.SPREAD:
       layout_children_spread()
+    set_pivot_offset(rect_size/2)
 
 
 func layout_children_packed() -> void:
@@ -102,8 +103,10 @@ func _unhandled_key_input(event: InputEventKey) -> void:
   if event.echo || event.pressed: return
   if event.scancode == KEY_G:
     $AnimationPlayer.play("Test")
-  elif event.scancode == KEY_H:
-    $TextureRect2.visible = !$TextureRect2.visible
-  elif event.scancode == KEY_J:
-    rect_pivot_offset = Vector2(rect_pivot_offset.x + 10, rect_pivot_offset.y + 10)
     get_tree().set_input_as_handled()
+  elif event.scancode == KEY_H:
+    $AnimationPlayer.play_backwards("Test")
+    get_tree().set_input_as_handled()
+  elif event.scancode == KEY_J:
+     $Blue.visible = !$Blue.visible
+     get_tree().set_input_as_handled()
