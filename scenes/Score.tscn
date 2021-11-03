@@ -10,3 +10,5 @@ score = 1
 
 [node name="CurrentScoreLayer" parent="." instance=ExtResource( 2 )]
 score = 1
+
+[node name="NextScoreLayer" parent="." instance=ExtResource( 2 )]

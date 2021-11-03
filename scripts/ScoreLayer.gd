@@ -1,5 +1,8 @@
 class_name ScoreLayer extends CenterContainer
 
+signal appeared # emtited when this score layer appears
+signal disappeared # emtited when this score layer disappears
+
 export(int) var score = 0 setget set_score,get_score
 
 onready var animationPlayer: AnimationPlayer = $AnimationPlayer
@@ -19,9 +22,11 @@ const sprites = [
 ]
 
 func _ready() -> void:
+  update()
   pass
 
-func center_on(point: Vector2):
+# TODO is this needed/used?
+func center_on(point: Vector2) -> void:
   set_global_position(
     Vector2(point.x - rect_size.x / 2, point.y - rect_size.y / 2)
   )
@@ -33,13 +38,30 @@ func set_score(new: int) -> void:
   score = new
   update()
 
+func appear() -> void:
+  visible = true
+  animationPlayer.play("Appear")
+
+func _appeared() -> void:
+  emit_signal("appeared")
+  pass
+
 func disappear() -> void:
   animationPlayer.play("Disappear")
 
-func reset() -> void:
-  animationPlayer.play_backwards("Disappear")
+func _disappeared() -> void:
+  emit_signal("disappeared")
+  visible = false
+  # TODO update score to score + 1 ??
 
-# we have to reference nodes directly as this is called in the score setter,
+func reset() -> void:
+  #animationPlayer.play_backwards("Disappear")
+  $AnimationPlayer.seek(0, false)
+  modulate = Color(1, 1, 1, 1)
+  rect_scale = Vector2(1, 1)
+  visible = true
+
+# we have to reference nodes this way as this is called in the score setter,
 # which means this runs before _ready()/onready
 func update():
   var digit1: TextureRect = $HBoxContainer/Digit1
