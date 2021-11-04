@@ -6,6 +6,7 @@ signal disappeared # emtited when this score layer disappears
 export(int) var score = 0 setget set_score,get_score
 
 onready var animationPlayer: AnimationPlayer = $AnimationPlayer
+onready var hBoxContainer: HBoxContainer = $HBoxContainer
 
 # we'll have 2 ScoreLayers - does the engine share these sprites or does it load them twice?
 const sprites = [
@@ -23,7 +24,6 @@ const sprites = [
 
 func _ready() -> void:
   update()
-  pass
 
 # TODO is this needed/used?
 func center_on(point: Vector2) -> void:
@@ -44,7 +44,6 @@ func appear() -> void:
 
 func _appeared() -> void:
   emit_signal("appeared")
-  pass
 
 func disappear() -> void:
   animationPlayer.play("Disappear")
@@ -54,12 +53,12 @@ func _disappeared() -> void:
   visible = false
   # TODO update score to score + 1 ??
 
-func reset() -> void:
+func reset(is_visible: bool = true) -> void:
   #animationPlayer.play_backwards("Disappear")
-  $AnimationPlayer.seek(0, false)
-  modulate = Color(1, 1, 1, 1)
-  rect_scale = Vector2(1, 1)
-  visible = true
+  $AnimationPlayer.seek(0, true)
+  hBoxContainer.modulate = Color(1, 1, 0, 1)
+  hBoxContainer.rect_scale = Vector2(1, 1)
+  visible = is_visible
 
 # we have to reference nodes this way as this is called in the score setter,
 # which means this runs before _ready()/onready
@@ -90,3 +89,15 @@ func update():
 
 func increase():
   set_score(score + 1)
+
+func _unhandled_key_input(event: InputEventKey) -> void:
+  if event.echo || event.pressed: return
+  if event.scancode == KEY_V:
+    disappear()
+    get_tree().set_input_as_handled()
+  elif event.scancode == KEY_B:
+    appear()
+    get_tree().set_input_as_handled()
+  elif event.scancode == KEY_N:
+    reset()
+    get_tree().set_input_as_handled()
