@@ -12,7 +12,6 @@ func _on_area_entered(area: Area2D) -> void:
     pass
   pass
 
-
 func set_rotation_around(point: Vector2, angle: float):
   .set_rotation_around(point, angle)
   print("> TARGET: set rotation to " + str(angle))
