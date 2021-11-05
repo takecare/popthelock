@@ -14,6 +14,12 @@ func _ready() -> void:
   _result = nextScoreLayer.connect("appeared", self, "_next_appeared")
   _result = nextScoreLayer.connect("disappeared", self, "_next_disappeared")
 
+func center_on(_point: Vector2):
+  #set_global_position(Vector2(point.x - rect_size.x / 2, point.y - rect_size.y / 2))
+  currentScoreLayer.center_on(_point)
+  nextScoreLayer.center_on(_point)
+  pass
+
 func get_score() -> int:
   return currentScoreLayer.get_score()
 
@@ -33,7 +39,7 @@ func increase() -> void:
 
 func reset() -> void:
   # TODO animate counting down until 0
-  score = 0
+  set_score(0)
   currentScoreLayer.reset()
   nextScoreLayer.reset(false)
 

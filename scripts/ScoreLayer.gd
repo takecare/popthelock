@@ -54,7 +54,6 @@ func _disappeared() -> void:
   # TODO update score to score + 1 ??
 
 func reset(is_visible: bool = true) -> void:
-  #animationPlayer.play_backwards("Disappear")
   $AnimationPlayer.seek(0, true)
   hBoxContainer.modulate = Color(1, 1, 0, 1)
   hBoxContainer.rect_scale = Vector2(1, 1)

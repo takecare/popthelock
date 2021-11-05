@@ -30,7 +30,6 @@ onready var lockCenter: Vector2 = lock.center.global_position
 var crosshairRotationDirection = -1 # 1=CW; -1=CCW
 var level = 0
 
-
 # should target and crosshair be children of lock?
 func _ready() -> void:
   target.position.x = lock.center.global_position.x
@@ -40,14 +39,11 @@ func _ready() -> void:
   score.center_on(lockCenter)
   randomize()
 
-
 func _process(delta: float) -> void:
   crosshair.set_rotation_around(lockCenter, step * speed * delta * crosshairRotationDirection)
 
-
 func _physics_process(_delta: float) -> void:
   pass
-
 
 func _on_Crosshair_target_hit() -> void:
   score.increase()
@@ -62,12 +58,11 @@ func increase_level() -> void:
   rot += 10
   target.set_rotation_around(lockCenter, rot) #randi() % 360
 
-
 func _on_Crosshair_target_missed() -> void:
   #crosshairRotationDirection = -1 if rand_range(0, 1) > 0.5 else 1
   print("> MISSED!")
+  score.reset()
   reset_target()
-
 
 func reset_target() -> void:
   score.reset()
