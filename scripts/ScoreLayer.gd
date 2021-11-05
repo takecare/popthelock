@@ -101,3 +101,9 @@ func _unhandled_key_input(event: InputEventKey) -> void:
   elif event.scancode == KEY_N:
     reset()
     get_tree().set_input_as_handled()
+  elif event.scancode == KEY_K:
+    $AnimationPlayer.set_speed_scale(0.25)
+    get_tree().set_input_as_handled()
+  elif event.scancode == KEY_L:
+    $AnimationPlayer.set_speed_scale(1)
+    get_tree().set_input_as_handled()
