@@ -19,11 +19,13 @@ export(float) var speed = 15
 export(float) var step = 5
 export(float) var yOffset = 74
 
-onready var lock: Lock = $Lock
-onready var target: Target = $Target
-onready var crosshair: Crosshair = $Crosshair
+onready var camera: Camera2D = $Camera
 
-onready var score: Score = $Score
+onready var lock: Lock = $Game/Lock
+onready var target: Target = $Game/Target
+onready var crosshair: Crosshair = $Game/Crosshair
+
+onready var score: Score = $Game/Score
 
 onready var lockCenter: Vector2 = lock.center.global_position
 
@@ -56,16 +58,23 @@ var rot = 0 #temporary
 func increase_level() -> void:
   level += 1
   rot += 10
-  target.set_rotation_around(lockCenter, rot) #randi() % 360
+  target.set_rotation_around(lockCenter, randi() % 360) #
 
 func _on_Crosshair_target_missed() -> void:
   #crosshairRotationDirection = -1 if rand_range(0, 1) > 0.5 else 1
   print("> MISSED!")
+  # TODO go to menu
   score.reset()
-  reset_target()
+  reset_target() # not working!
 
 func reset_target() -> void:
   score.reset()
   target.set_rotation_around(lockCenter, 0)
   # ^ it seems that rotation is cumulative so when we call set_rotation_arount(x)
   # we're just adding to the rotation that is already there
+
+func _unhandled_key_input(event: InputEventKey) -> void:
+  if event.echo || event.pressed: return
+  if event.scancode == KEY_C:
+    camera.zoom = Vector2(1, 1)
+    get_tree().set_input_as_handled()
