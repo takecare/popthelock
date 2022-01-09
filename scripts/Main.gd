@@ -75,6 +75,9 @@ func reset_target() -> void:
 
 func _unhandled_key_input(event: InputEventKey) -> void:
   if event.echo || event.pressed: return
-  if event.scancode == KEY_C:
-    camera.zoom = Vector2(1, 1)
+  if event.scancode == KEY_Z:
+    camera.zoom_in()
+    get_tree().set_input_as_handled()
+  elif event.scancode == KEY_X:
+    camera.zoom_out()
     get_tree().set_input_as_handled()

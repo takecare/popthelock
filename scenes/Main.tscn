@@ -1,10 +1,41 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scenes/Crosshair.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/Target.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scripts/Main.gd" type="Script" id=3]
 [ext_resource path="res://scenes/Score.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/Lock.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scripts/Camera.gd" type="Script" id=6]
+
+[sub_resource type="Animation" id=1]
+resource_name = "ZoomIn"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:zoom")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 0.25, 1 ),
+"update": 0,
+"values": [ Vector2( 2, 2 ), Vector2( 1, 1 ) ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "_on_zoomed_in"
+} ]
+}
 
 [node name="Main" type="Node2D"]
 script = ExtResource( 3 )
@@ -12,9 +43,11 @@ script = ExtResource( 3 )
 [node name="Camera" type="Camera2D" parent="."]
 position = Vector2( 360, 640 )
 current = true
-zoom = Vector2( 1.5, 1.5 )
+zoom = Vector2( 2, 2 )
+script = ExtResource( 6 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Camera"]
+anims/ZoomIn = SubResource( 1 )
 
 [node name="Game" type="Node2D" parent="."]
 __meta__ = {
