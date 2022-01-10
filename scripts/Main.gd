@@ -2,7 +2,6 @@ extends Node2D
 
 # game basics
 # TODO add lock part of the lock
-# TODO display score, animate it increasing, animate it decreasing when player loses (counting down)
 # TODO track level, which determines the angle range in which the target is placed
 # TODO animate target disappearing and reappearing
 # TODO animate crosshair hitting and missing
@@ -15,9 +14,12 @@ extends Node2D
 # the crosshair is within the target so, for a given hit, your score can go from
 # 0 to 10 (as an example)
 
-export(float) var speed = 15
+export(float) var initial_speed = 15
 export(float) var step = 5
 export(float) var yOffset = 74
+
+var isPlaying: bool = false
+var speed: float = initial_speed
 
 onready var camera: Camera2D = $Camera
 
@@ -48,22 +50,24 @@ func _physics_process(_delta: float) -> void:
   pass
 
 func _on_Crosshair_target_hit() -> void:
+  if !isPlaying:
+    return
   score.increase()
   speed += 3 # TODO increase speed at reasonable pace
   increase_level()
   crosshairRotationDirection *= -1
 
-var rot = 0 #temporary
-
 func increase_level() -> void:
   level += 1
-  rot += 10
   target.set_rotation_around(lockCenter, randi() % 360) #
 
 func _on_Crosshair_target_missed() -> void:
+  if !isPlaying:
+    return
   #crosshairRotationDirection = -1 if rand_range(0, 1) > 0.5 else 1
   print("> MISSED!")
   # TODO go to menu
+  speed = initial_speed
   score.reset()
   reset_target() # not working!
 
@@ -81,3 +85,11 @@ func _unhandled_key_input(event: InputEventKey) -> void:
   elif event.scancode == KEY_X:
     camera.zoom_out()
     get_tree().set_input_as_handled()
+  elif event.scancode == KEY_P:
+    isPlaying = !isPlaying
+    get_tree().set_input_as_handled()
+
+func _on_StartButton_tapped(origin: FadeButton) -> void:
+  origin.fade_out()
+  camera.zoom_in()
+  isPlaying = true

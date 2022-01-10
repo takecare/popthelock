@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://scenes/Crosshair.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/Target.tscn" type="PackedScene" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://scenes/Score.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/Lock.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scripts/Camera.gd" type="Script" id=6]
+[ext_resource path="res://scenes/FadeButton.tscn" type="PackedScene" id=7]
 
 [sub_resource type="Animation" id=1]
 resource_name = "ZoomIn"
@@ -40,11 +41,29 @@ tracks/1/keys = {
 [node name="Main" type="Node2D"]
 script = ExtResource( 3 )
 
+[node name="GUI" type="CanvasLayer" parent="."]
+
+[node name="HBox" type="HBoxContainer" parent="GUI"]
+margin_top = 1000.0
+margin_right = 720.0
+margin_bottom = 1064.0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="StartButton" parent="GUI/HBox" instance=ExtResource( 7 )]
+margin_left = 328.0
+margin_right = 392.0
+
 [node name="Camera" type="Camera2D" parent="."]
 position = Vector2( 360, 640 )
 current = true
 zoom = Vector2( 2, 2 )
 script = ExtResource( 6 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Camera"]
 anims/ZoomIn = SubResource( 1 )
@@ -71,6 +90,7 @@ scale = Vector2( 0.15, 0.15 )
 position = Vector2( 232, 524 )
 score = 0
 
+[connection signal="tapped" from="GUI/HBox/StartButton" to="." method="_on_StartButton_tapped"]
 [connection signal="area_entered" from="Game/Target" to="Game/Crosshair" method="_on_Target_area_entered"]
 [connection signal="area_entered" from="Game/Target" to="Game/Target" method="_on_area_entered"]
 [connection signal="area_exited" from="Game/Target" to="Game/Crosshair" method="_on_Target_area_exited"]
