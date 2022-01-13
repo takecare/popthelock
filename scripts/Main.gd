@@ -59,7 +59,8 @@ func _on_Crosshair_target_hit() -> void:
 
 func increase_level() -> void:
   level += 1
-  target.set_rotation_around(lockCenter, randi() % 360) #
+  # TODO next angle has to place the target in the same direction as the xhair's movement
+  target.set_rotation_around(lockCenter, randi() % 360)
 
 func _on_Crosshair_target_missed() -> void:
   if !isPlaying:
@@ -74,7 +75,7 @@ func _on_Crosshair_target_missed() -> void:
 func reset_target() -> void:
   score.reset()
   target.set_rotation_around(lockCenter, 0)
-  # ^ it seems that rotation is cumulative so when we call set_rotation_arount(x)
+  # ^ it seems that rotation is cumulative so when we call set_rotation_around(x)
   # we're just adding to the rotation that is already there
 
 func _unhandled_key_input(event: InputEventKey) -> void:
