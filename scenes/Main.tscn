@@ -10,7 +10,7 @@
 
 [sub_resource type="Animation" id=1]
 resource_name = "ZoomIn"
-length = 0.5
+length = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:zoom")
 tracks/0/interp = 1
@@ -18,8 +18,8 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.5 ),
-"transitions": PoolRealArray( 0.25, 1 ),
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 0.25, 0.25 ),
 "update": 0,
 "values": [ Vector2( 2, 2 ), Vector2( 1, 1 ) ]
 }
@@ -30,12 +30,44 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0.5 ),
+"times": PoolRealArray( 0.2 ),
 "transitions": PoolRealArray( 1 ),
 "values": [ {
 "args": [  ],
 "method": "_on_zoomed_in"
 } ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:offset")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 0.25, 1 ),
+"update": 0,
+"values": [ Vector2( 360, 320 ), Vector2( 0, 0 ) ]
+}
+tracks/3/type = "bezier"
+tracks/3/path = NodePath(".:offset:x")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = false
+tracks/3/keys = {
+"points": PoolRealArray( 360, -0.25, 0, 0.283781, 1, 0, -0.25, -3, 0.25, 120 ),
+"times": PoolRealArray( 0, 0.2 )
+}
+tracks/4/type = "bezier"
+tracks/4/path = NodePath(".:offset:y")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = false
+tracks/4/keys = {
+"points": PoolRealArray( 320, -0.25, 0, 0.25, 0, 0, -0.25, 4, 0.25, 120 ),
+"times": PoolRealArray( 0, 0.2 )
 }
 
 [node name="Main" type="Node2D"]
@@ -57,7 +89,8 @@ margin_left = 328.0
 margin_right = 392.0
 
 [node name="Camera" type="Camera2D" parent="."]
-position = Vector2( 360, 640 )
+position = Vector2( 360, 960 )
+offset = Vector2( 360, 320 )
 current = true
 zoom = Vector2( 2, 2 )
 script = ExtResource( 6 )
@@ -66,6 +99,7 @@ __meta__ = {
 }
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Camera"]
+playback_speed = 0.25
 anims/ZoomIn = SubResource( 1 )
 
 [node name="Game" type="Node2D" parent="."]
