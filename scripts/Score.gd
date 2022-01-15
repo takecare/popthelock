@@ -93,15 +93,3 @@ func _unhandled_key_input(event: InputEventKey) -> void:
   if event.scancode == KEY_S:
     decrease()
     get_tree().set_input_as_handled()
-  elif event.scancode == KEY_G:
-    currentScoreLayer.disappear()
-    get_tree().set_input_as_handled()
-  elif event.scancode == KEY_H:
-    nextScoreLayer.appear()
-    get_tree().set_input_as_handled()
-  elif event.scancode == KEY_J:
-    currentScoreLayer.reset()
-    get_tree().set_input_as_handled()
-  elif event.scancode == KEY_K:
-    nextScoreLayer.reset()
-    get_tree().set_input_as_handled()

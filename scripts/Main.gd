@@ -18,6 +18,8 @@ export(float) var initial_speed = 15
 export(float) var step = 5
 export(float) var yOffset = 74
 
+const progression = [1, 3, 5, 7, 9, 11, 13]
+
 var isPlaying: bool = false
 var speed: float = initial_speed
 
@@ -33,6 +35,7 @@ onready var lockCenter: Vector2 = lock.center.global_position
 
 var crosshairRotationDirection = -1 # 1=CW; -1=CCW
 var level = 0
+var count = progression[0]
 
 # should target and crosshair be children of lock?
 func _ready() -> void:
@@ -41,6 +44,7 @@ func _ready() -> void:
   #target.position.y = lock.center.global_position.y - lock.body.rect_size.y / 2 + yOffset
   crosshair.set_position(target.global_position)
   score.center_on(lockCenter)
+  score.set_score(count)
   randomize()
 
 func _process(delta: float) -> void:
@@ -52,15 +56,24 @@ func _physics_process(_delta: float) -> void:
 func _on_Crosshair_target_hit() -> void:
   if !isPlaying:
     return
-  score.increase()
   speed += 3 # TODO increase speed at reasonable pace
-  increase_level()
   crosshairRotationDirection *= -1
+  count -= 1
+  if count == 0:
+    decrease_count()
+    increase_level()
+  else:
+    decrease_count()
 
 func increase_level() -> void:
   level += 1
+  count = progression[level]
+  score.set_score(count)
   # TODO next angle has to place the target in the same direction as the xhair's movement
   target.set_rotation_around(lockCenter, randi() % 360)
+
+func decrease_count() -> void:
+  score.decrease()
 
 func _on_Crosshair_target_missed() -> void:
   if !isPlaying:
@@ -87,7 +100,13 @@ func _unhandled_key_input(event: InputEventKey) -> void:
     camera.zoom_out()
     get_tree().set_input_as_handled()
   elif event.scancode == KEY_P:
-    isPlaying = !isPlaying
+    _on_StartButton_tapped($GUI/HBox/StartButton)
+    get_tree().set_input_as_handled()
+  elif event.scancode == KEY_H:
+    _on_Crosshair_target_hit()
+    get_tree().set_input_as_handled()
+  elif event.scancode == KEY_M:
+    _on_Crosshair_target_missed()
     get_tree().set_input_as_handled()
 
 func _on_StartButton_tapped(origin: FadeButton) -> void:

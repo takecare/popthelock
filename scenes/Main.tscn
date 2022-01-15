@@ -122,11 +122,10 @@ scale = Vector2( 0.15, 0.15 )
 
 [node name="Score" parent="Game" instance=ExtResource( 4 )]
 position = Vector2( 232, 524 )
-score = 3
 
 [connection signal="tapped" from="GUI/HBox/StartButton" to="." method="_on_StartButton_tapped"]
-[connection signal="area_entered" from="Game/Target" to="Game/Crosshair" method="_on_Target_area_entered"]
 [connection signal="area_entered" from="Game/Target" to="Game/Target" method="_on_area_entered"]
+[connection signal="area_entered" from="Game/Target" to="Game/Crosshair" method="_on_Target_area_entered"]
 [connection signal="area_exited" from="Game/Target" to="Game/Crosshair" method="_on_Target_area_exited"]
 [connection signal="on_target_hit" from="Game/Crosshair" to="." method="_on_Crosshair_target_hit"]
 [connection signal="on_target_missed" from="Game/Crosshair" to="." method="_on_Crosshair_target_missed"]
