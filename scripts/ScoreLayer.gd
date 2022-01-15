@@ -51,7 +51,6 @@ func disappear() -> void:
 func _disappeared() -> void:
   emit_signal("disappeared")
   visible = false
-  # TODO update score to score + 1 ??
 
 func reset(is_visible: bool = true) -> void:
   $AnimationPlayer.seek(0, true)
@@ -86,8 +85,8 @@ func update():
     digit2.visible = true
     digit3.visible = true
 
-func increase():
-  set_score(score + 1)
+#func increase():
+#  set_score(score + 1)
 
 func _unhandled_key_input(event: InputEventKey) -> void:
   if event.echo || event.pressed: return

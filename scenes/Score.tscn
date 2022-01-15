@@ -6,7 +6,6 @@
 [node name="Score" type="Node2D"]
 z_as_relative = false
 script = ExtResource( 1 )
-score = 1
 
 [node name="CurrentScoreLayer" parent="." instance=ExtResource( 2 )]
 
