@@ -40,7 +40,7 @@ var count = progression[0]
 # should target and crosshair be children of lock?
 func _ready() -> void:
   target.position.x = lock.center.global_position.x
-  target.position.y = lock.body.rect_global_position.y + yOffset #lock.body.rect_size.y / 2
+  target.position.y = lock.body.rect_global_position.y + yOffset
   #target.position.y = lock.center.global_position.y - lock.body.rect_size.y / 2 + yOffset
   crosshair.set_position(target.global_position)
   score.center_on(lockCenter)
@@ -58,31 +58,31 @@ func _on_Crosshair_target_hit() -> void:
     return
   speed += 3 # TODO increase speed at reasonable pace
   crosshairRotationDirection *= -1
-  count -= 1
+  print("[MAIN] HIT score="+str(score.get_score())+", count="+str(count)+", level="+str(level))
+  decrease_count()
   if count == 0:
-    decrease_count()
     increase_level()
-  else:
-    decrease_count()
+
+func decrease_count() -> void:
+  count -= 1
+  score.decrease()
 
 func increase_level() -> void:
   level += 1
   count = progression[level]
-  score.set_score(count)
+  print("[MAIN] will increase level: score set to " + str(count))
+  score.next_level(count) # score.set_score(count)
   # TODO next angle has to place the target in the same direction as the xhair's movement
   target.set_rotation_around(lockCenter, randi() % 360)
-
-func decrease_count() -> void:
-  score.decrease()
 
 func _on_Crosshair_target_missed() -> void:
   if !isPlaying:
     return
-  #crosshairRotationDirection = -1 if rand_range(0, 1) > 0.5 else 1
-  print("> MISSED!")
   # TODO go to menu
   speed = initial_speed
-  score.reset()
+  level = 0
+  count = progression[level]
+  score.set_score(count)
   reset_target() # not working!
 
 func reset_target() -> void:

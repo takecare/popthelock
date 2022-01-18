@@ -9,9 +9,9 @@ func zoom_in() -> void:
   animationPlayer.play("ZoomIn")
 
 func _on_zoomed_in() -> void:
-  print("> on zoomed in")
   # FIXME as we're playing the same animation ("ZoomIn") backwards when zooming
-  # out, this callback gets called immediately (when zooming back out)
+  # out, this callback gets called immediately (when zooming back out) -- this
+  # can be easily fixed with a flag (ugly tho)
   pass
 
 func zoom_out() -> void:

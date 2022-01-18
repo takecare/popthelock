@@ -5,8 +5,9 @@ export(int) var score = 3 setget set_score,get_score
 onready var currentScoreLayer: ScoreLayer = $CurrentScoreLayer
 onready var nextScoreLayer: ScoreLayer = $NextScoreLayer
 
+signal updated
+
 func _ready() -> void:
-  #set_score(score)
   currentScoreLayer.set_score(score)
 
   currentScoreLayer.visible = true
@@ -17,7 +18,6 @@ func _ready() -> void:
   _result = nextScoreLayer.connect("disappeared", self, "_next_disappeared")
 
 func center_on(_point: Vector2):
-  #set_global_position(Vector2(point.x - rect_size.x / 2, point.y - rect_size.y / 2))
   currentScoreLayer.center_on(_point)
   nextScoreLayer.center_on(_point)
   pass
@@ -25,7 +25,7 @@ func center_on(_point: Vector2):
 func get_score() -> int:
   return currentScoreLayer.get_score()
 
-enum Mode { INCREASING, DECREASING }
+enum Mode { INCREASING, DECREASING, NEXT_LEVEL }
 var mode = Mode.DECREASING
 
 func set_score(new: int) -> void:
@@ -33,27 +33,29 @@ func set_score(new: int) -> void:
   # currentScoreLayer is not set yet
   if currentScoreLayer == null:
     return
+  print("[SCORE] setting score to "+str(new))
   currentScoreLayer.set_score(new)
-  #if mode == Mode.DECREASING:
-  #  nextScoreLayer.set_score(new - 1)
-  #else:
-  #  nextScoreLayer.set_score(new + 1)
   score = new
-  print("UPDATED score to "+str(new))
+
+func next_level(new: int) -> void:
+  print("[SCORE] next level. setting score to "+str(new))
+  mode = Mode.NEXT_LEVEL
+  currentScoreLayer.set_score(new)
+  score = new
 
 func increase() -> void:
   mode = Mode.INCREASING
   nextScoreLayer.set_score(score + 1)
-  print("INC: score="+str(score)+" next="+str(nextScoreLayer.get_score()) + " curr="+str(currentScoreLayer.get_score()))
   currentScoreLayer.disappear()
   nextScoreLayer.appear()
 
-func decrease() -> void:
+# ff = fastforward (TODO) useful when going from 1 to 0 so we can animate from
+# 0 to NEW
+func decrease(ff: bool = false) -> void:
   mode = Mode.DECREASING
   nextScoreLayer.set_score(score - 1)
-  print("DEC: next="+str(nextScoreLayer.get_score()) + " curr="+str(currentScoreLayer.get_score()))
-  currentScoreLayer.disappear()
-  nextScoreLayer.appear()
+  currentScoreLayer.disappear(ff)
+  nextScoreLayer.appear(ff)
 
 func reset() -> void:
   # TODO animate counting down until 0
@@ -65,21 +67,23 @@ func _current_appeared() -> void:
   pass
 
 func _current_disappeared() -> void:
-  pass #print("> current disappeared: " + str(nextScoreLayer.get_score()))
+  pass
 
 func _next_appeared() -> void:
   currentScoreLayer.reset()
   nextScoreLayer.reset(false)
+
+  if mode == Mode.NEXT_LEVEL:
+    currentScoreLayer.set_score(score)
+    return
+
+  print("[SCORE] animation finished. current score="+str(score))
   if mode == Mode.DECREASING:
-    print("NEXT APPEARED (DEC): setting current layer to "+str(score-1))
-    currentScoreLayer.set_score(score-1) #set_score(score - 1)
-    score = score - 1
-    #nextScoreLayer.set_score(score)
+    set_score(score-1) # score = score - 1
   else:
-    print("NEXT APPEARED (INC): setting current layer to "+str(score+1))
-    currentScoreLayer.set_score(score+1) #set_score(score + 1)
-    score = score + 1
-    #nextScoreLayer.set_score(score)
+    set_score(score+1) # score = score + 1
+  print("[SCORE] animation finished. setting score to "+str(score))
+  currentScoreLayer.set_score(score)
 
 func _next_disappeared() -> void:
   pass

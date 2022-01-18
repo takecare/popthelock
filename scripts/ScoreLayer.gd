@@ -38,15 +38,15 @@ func set_score(new: int) -> void:
   score = new
   update()
 
-func appear() -> void:
+func appear(ff: bool = false) -> void:
   visible = true
-  animationPlayer.play("Appear")
+  animationPlayer.play("Appear", -1, 2.0 if ff else 1.0)
 
 func _appeared() -> void:
   emit_signal("appeared")
 
-func disappear() -> void:
-  animationPlayer.play("Disappear")
+func disappear(ff: bool = false) -> void:
+  animationPlayer.play("Disappear", -1, 2.0 if ff else 1.0)
 
 func _disappeared() -> void:
   emit_signal("disappeared")
