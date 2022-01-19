@@ -3,7 +3,7 @@ class_name ScoreLayer extends CenterContainer
 signal appeared # emtited when this score layer appears
 signal disappeared # emtited when this score layer disappears
 
-export(int) var score = 0 setget set_score,get_score
+export(int) var score: int = 0 setget set_score,get_score
 
 onready var animationPlayer: AnimationPlayer = $AnimationPlayer
 onready var hBoxContainer: HBoxContainer = $HBoxContainer
@@ -98,6 +98,19 @@ func _unhandled_key_input(event: InputEventKey) -> void:
     get_tree().set_input_as_handled()
   elif event.scancode == KEY_N:
     reset()
+    get_tree().set_input_as_handled()
+  elif event.scancode == KEY_U:
+    var result = $Tween.interpolate_property(
+      self,
+      @"score",
+      0, # initial
+      3, # final
+      0.15, # duration
+      Tween.TRANS_LINEAR,
+      Tween.EASE_IN_OUT,
+      0 # delay
+    )
+    result = $Tween.start()
     get_tree().set_input_as_handled()
   elif event.scancode == KEY_K:
     $AnimationPlayer.set_speed_scale(0.25)

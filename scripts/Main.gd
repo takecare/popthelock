@@ -65,6 +65,7 @@ func _on_Crosshair_target_hit() -> void:
 
 func decrease_count() -> void:
   count -= 1
+  var fastforward = true if count == 0 else false
   score.decrease()
 
 func increase_level() -> void:

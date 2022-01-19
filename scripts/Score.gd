@@ -40,6 +40,7 @@ func set_score(new: int) -> void:
 func next_level(new: int) -> void:
   print("[SCORE] next level. setting score to "+str(new))
   mode = Mode.NEXT_LEVEL
+  # TODO animate count from 0 to new
   currentScoreLayer.set_score(new)
   score = new
 
@@ -79,9 +80,9 @@ func _next_appeared() -> void:
 
   print("[SCORE] animation finished. current score="+str(score))
   if mode == Mode.DECREASING:
-    set_score(score-1) # score = score - 1
+    set_score(score - 1) # score = score - 1
   else:
-    set_score(score+1) # score = score + 1
+    set_score(score + 1) # score = score + 1
   print("[SCORE] animation finished. setting score to "+str(score))
   currentScoreLayer.set_score(score)
 
