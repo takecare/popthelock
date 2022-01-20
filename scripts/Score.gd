@@ -9,7 +9,6 @@ signal updated
 
 func _ready() -> void:
   currentScoreLayer.set_score(score)
-
   currentScoreLayer.visible = true
   nextScoreLayer.visible = false
   var _result = currentScoreLayer.connect("appeared", self, "_current_appeared")
@@ -17,10 +16,9 @@ func _ready() -> void:
   _result = nextScoreLayer.connect("appeared", self, "_next_appeared")
   _result = nextScoreLayer.connect("disappeared", self, "_next_disappeared")
 
-func center_on(_point: Vector2):
+func center_on(_point: Vector2) -> void:
   currentScoreLayer.center_on(_point)
   nextScoreLayer.center_on(_point)
-  pass
 
 func get_score() -> int:
   return currentScoreLayer.get_score()
@@ -30,7 +28,7 @@ var mode = Mode.DECREASING
 
 func set_score(new: int) -> void:
   # we need to check if it's null because the first time this runs,
-  # currentScoreLayer is not set yet
+  # currentScoreLayer is not yet set
   if currentScoreLayer == null:
     return
   print("[SCORE] setting score to "+str(new))
@@ -40,8 +38,7 @@ func set_score(new: int) -> void:
 func next_level(new: int) -> void:
   print("[SCORE] next level. setting score to "+str(new))
   mode = Mode.NEXT_LEVEL
-  # TODO animate count from 0 to new
-  currentScoreLayer.set_score(new)
+  #currentScoreLayer.set_score(new) #currentScoreLayer.animate_to(new)
   score = new
 
 func increase() -> void:
@@ -71,19 +68,23 @@ func _current_disappeared() -> void:
   pass
 
 func _next_appeared() -> void:
-  currentScoreLayer.reset()
+  print("[SCORE] next appeared ("+str(score)+"). reseting current and next layers")
+  #currentScoreLayer.reset()
   nextScoreLayer.reset(false)
 
   if mode == Mode.NEXT_LEVEL:
-    currentScoreLayer.set_score(score)
+    #currentScoreLayer.animate_to(score) this is not needed
+    currentScoreLayer.animate_to(score)
     return
 
-  print("[SCORE] animation finished. current score="+str(score))
+  currentScoreLayer.reset()
+
+  var msg = "[SCORE] animation finished. current score="+str(score)+", "
   if mode == Mode.DECREASING:
     set_score(score - 1) # score = score - 1
   else:
     set_score(score + 1) # score = score + 1
-  print("[SCORE] animation finished. setting score to "+str(score))
+  print(msg + " updated to "+str(score))
   currentScoreLayer.set_score(score)
 
 func _next_disappeared() -> void:

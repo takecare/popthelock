@@ -70,6 +70,8 @@ func decrease_count() -> void:
 
 func increase_level() -> void:
   level += 1
+  if level >= len(progression):
+      return
   count = progression[level]
   print("[MAIN] will increase level: score set to " + str(count))
   score.next_level(count) # score.set_score(count)

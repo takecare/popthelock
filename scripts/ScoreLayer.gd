@@ -23,6 +23,9 @@ const sprites = [
 ]
 
 func _ready() -> void:
+  # reset aniamted properties so it doesn't matter in which position the animation is in (in the editor)
+  $HBoxContainer.rect_scale = Vector2(1, 1)
+  $HBoxContainer.modulate = Color(1, 1, 1, 1)
   update()
 
 # TODO is this needed/used?
@@ -35,8 +38,27 @@ func get_score() -> int:
   return score
 
 func set_score(new: int) -> void:
+  print("[LAYER] setting score to "+str(new))
   score = new
   update()
+
+var enqueuedTween = false
+
+func animate_to(to: int) -> void:
+  reset()
+  print("[LAYER] animating to "+str(to))
+  $Tween.interpolate_property(
+    self,
+    @"score",
+    0, # initial
+    to, # final
+    0.15, # duration
+    Tween.TRANS_LINEAR,
+    Tween.EASE_IN_OUT,
+    0 # delay
+  )
+  $Tween.start()
+  enqueuedTween = true
 
 func appear(ff: bool = false) -> void:
   visible = true
@@ -44,6 +66,7 @@ func appear(ff: bool = false) -> void:
 
 func _appeared() -> void:
   emit_signal("appeared")
+  #if enqueuedTween: $Tween.start()
 
 func disappear(ff: bool = false) -> void:
   animationPlayer.play("Disappear", -1, 2.0 if ff else 1.0)
@@ -84,9 +107,6 @@ func update():
     digit1.visible = true
     digit2.visible = true
     digit3.visible = true
-
-#func increase():
-#  set_score(score + 1)
 
 func _unhandled_key_input(event: InputEventKey) -> void:
   if event.echo || event.pressed: return
