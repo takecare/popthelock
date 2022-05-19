@@ -4,6 +4,7 @@ signal appeared # emtited when this score layer appears
 signal disappeared # emtited when this score layer disappears
 
 export(int) var score: int = 0 setget set_score,get_score
+export(bool) var in_progress: bool = false setget ,_in_progress
 
 onready var animationPlayer: AnimationPlayer = $AnimationPlayer
 onready var hBoxContainer: HBoxContainer = $HBoxContainer
@@ -38,15 +39,11 @@ func get_score() -> int:
   return score
 
 func set_score(new: int) -> void:
-  print("[LAYER] setting score to "+str(new))
   score = new
   update()
 
-var enqueuedTween = false
-
 func animate_to(to: int) -> void:
   reset()
-  print("[LAYER] animating to "+str(to))
   $Tween.interpolate_property(
     self,
     @"score",
@@ -58,7 +55,6 @@ func animate_to(to: int) -> void:
     0 # delay
   )
   $Tween.start()
-  enqueuedTween = true
 
 func appear(ff: bool = false) -> void:
   visible = true
@@ -66,7 +62,6 @@ func appear(ff: bool = false) -> void:
 
 func _appeared() -> void:
   emit_signal("appeared")
-  #if enqueuedTween: $Tween.start()
 
 func disappear(ff: bool = false) -> void:
   animationPlayer.play("Disappear", -1, 2.0 if ff else 1.0)
@@ -84,6 +79,7 @@ func reset(is_visible: bool = true) -> void:
 # we have to reference nodes this way as this is called in the score setter,
 # which means this runs before _ready()/onready
 func update():
+  print("["+self.name+"] updating score to "+str(score))
   var digit1: TextureRect = $HBoxContainer/Digit1
   var digit2: TextureRect = $HBoxContainer/Digit2
   var digit3: TextureRect = $HBoxContainer/Digit3
@@ -107,6 +103,9 @@ func update():
     digit1.visible = true
     digit2.visible = true
     digit3.visible = true
+
+func _in_progress() -> bool:
+  return $AnimationPlayer.current_animation_position > 0
 
 func _unhandled_key_input(event: InputEventKey) -> void:
   if event.echo || event.pressed: return

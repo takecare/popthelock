@@ -14,11 +14,14 @@ extends Node2D
 # the crosshair is within the target so, for a given hit, your score can go from
 # 0 to 10 (as an example)
 
+const progression = [1, 3, 5, 7, 9, 11, 13]
+
 export(float) var initial_speed = 15
 export(float) var step = 5
 export(float) var yOffset = 74
 
-const progression = [1, 3, 5, 7, 9, 11, 13]
+export(int) var level = 0
+export(int) var count = progression[0]
 
 var isPlaying: bool = false
 var speed: float = initial_speed
@@ -34,8 +37,6 @@ onready var score: Score = $Game/Score
 onready var lockCenter: Vector2 = lock.center.global_position
 
 var crosshairRotationDirection = -1 # 1=CW; -1=CCW
-var level = 0
-var count = progression[0]
 
 # should target and crosshair be children of lock?
 func _ready() -> void:
@@ -56,16 +57,18 @@ func _physics_process(_delta: float) -> void:
 func _on_Crosshair_target_hit() -> void:
   if !isPlaying:
     return
+  print("[MAIN] HIT score="+str(score.get_score())+", count="+str(count)+", level="+str(level)+". in progress? "+str($Game/Score.in_progress)+". resting? "+str($Game/Score.mode == 0))
+  if $Game/Score.in_progress:
+    return
   speed += 3 # TODO increase speed at reasonable pace
   crosshairRotationDirection *= -1
-  print("[MAIN] HIT score="+str(score.get_score())+", count="+str(count)+", level="+str(level))
   decrease_count()
   if count == 0:
     increase_level()
 
 func decrease_count() -> void:
   count -= 1
-  var fastforward = true if count == 0 else false
+  #var fastforward = true if count == 0 else false
   score.decrease()
 
 func increase_level() -> void:
@@ -73,7 +76,6 @@ func increase_level() -> void:
   if level >= len(progression):
       return
   count = progression[level]
-  print("[MAIN] will increase level: score set to " + str(count))
   score.next_level(count) # score.set_score(count)
   # TODO next angle has to place the target in the same direction as the xhair's movement
   target.set_rotation_around(lockCenter, randi() % 360)
@@ -85,10 +87,12 @@ func _on_Crosshair_target_missed() -> void:
   speed = initial_speed
   level = 0
   count = progression[level]
+  print("[MAIN] setting score to "+str(count))
   score.set_score(count)
   reset_target() # not working!
 
 func reset_target() -> void:
+  print("[MAIN] resetting score")
   score.reset()
   target.set_rotation_around(lockCenter, 0)
   # ^ it seems that rotation is cumulative so when we call set_rotation_around(x)
@@ -106,6 +110,11 @@ func _unhandled_key_input(event: InputEventKey) -> void:
     _on_StartButton_tapped($GUI/HBox/StartButton)
     get_tree().set_input_as_handled()
   elif event.scancode == KEY_H:
+    _on_Crosshair_target_hit()
+    get_tree().set_input_as_handled()
+  elif event.scancode == KEY_Y:
+    _on_Crosshair_target_hit()
+    yield(get_tree().create_timer(0.28), "timeout")
     _on_Crosshair_target_hit()
     get_tree().set_input_as_handled()
   elif event.scancode == KEY_M:
