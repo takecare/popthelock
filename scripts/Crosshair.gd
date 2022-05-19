@@ -3,7 +3,7 @@ class_name Crosshair extends "Rotatable.gd"
 signal on_target_hit
 signal on_target_missed
 
-var isInside: bool = false
+var is_inside: bool = false
 
 func _ready() -> void:
   pass
@@ -11,7 +11,7 @@ func _ready() -> void:
 func _physics_process(_delta: float) -> void:
   if !Input.is_action_just_pressed("click"):
     return
-  if isInside:
+  if is_inside:
     emit_signal("on_target_hit")
   else:
     emit_signal("on_target_missed")
@@ -27,7 +27,7 @@ func set_rotation_around(point: Vector2, angle: float):
 #  print("> XHAIR: set rotation to " + str(angle))
 
 func _on_Target_area_entered(_area: Area2D) -> void:
-  isInside = true
+  is_inside = true
 
 func _on_Target_area_exited(_area: Area2D) -> void:
-  isInside = false
+  is_inside = false

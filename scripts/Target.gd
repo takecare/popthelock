@@ -5,15 +5,15 @@ class_name Target extends "Rotatable.gd"
 # thus enabling us to score that hit on an arbitrary scale, instead of just
 # hit vs miss
 
-export(NodePath) var crosshairPath = null
-onready var crosshair = get_node(crosshairPath) if crosshairPath != null else null
-onready var crosshairName = crosshair.name if crosshair != null else ""
+export(NodePath) var crosshair_path = null
+onready var crosshair = get_node(crosshair_path) if crosshair_path != null else null
+onready var crosshair_name = crosshair.name if crosshair != null else ""
 
 func _ready() -> void:
   pass
 
 func _on_area_entered(area: Area2D) -> void:
-  if area.name == crosshairName:
+  if area.name == crosshair_name:
     pass
   pass
 
