@@ -24,7 +24,7 @@ export(int) var level = 0
 export(int) var count = progression[0]
 
 var isPlaying: bool = false
-var speed: float = initial_speed
+var crosshair_speed: float = initial_speed
 
 onready var camera: Camera2D = $Camera
 
@@ -49,7 +49,7 @@ func _ready() -> void:
   randomize()
 
 func _process(delta: float) -> void:
-  crosshair.set_rotation_around(lockCenter, step * speed * delta * crosshairRotationDirection)
+  crosshair.set_rotation_around(lockCenter, step * crosshair_speed * delta * crosshairRotationDirection)
 
 func _physics_process(_delta: float) -> void:
   pass
@@ -60,7 +60,7 @@ func _on_Crosshair_target_hit() -> void:
   print("[MAIN] HIT score="+str(score.get_score())+", count="+str(count)+", level="+str(level)+". in progress? "+str($Game/Score.in_progress)+". resting? "+str($Game/Score.mode == 0))
   if $Game/Score.in_progress:
     return
-  speed += 3 # TODO increase speed at reasonable pace
+  crosshair_speed += 3 # TODO increase speed at reasonable pace
   crosshairRotationDirection *= -1
   decrease_count()
   if count == 0:
@@ -84,16 +84,14 @@ func _on_Crosshair_target_missed() -> void:
   if !isPlaying:
     return
   # TODO go to menu
-  speed = initial_speed
+  crosshair_speed = initial_speed
   level = 0
   count = progression[level]
-  print("[MAIN] setting score to "+str(count))
   score.set_score(count)
-  reset_target() # not working!
+  reset_target()
 
 func reset_target() -> void:
-  print("[MAIN] resetting score")
-  score.reset()
+  #score.reset()
   target.set_rotation_around(lockCenter, 0)
   # ^ it seems that rotation is cumulative so when we call set_rotation_around(x)
   # we're just adding to the rotation that is already there
