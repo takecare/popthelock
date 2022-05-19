@@ -114,7 +114,6 @@ margin_bottom = 821.0
 [node name="Target" parent="Game" instance=ExtResource( 2 )]
 position = Vector2( 360, 456 )
 scale = Vector2( 0.15, 0.15 )
-crosshairPath = NodePath("../Crosshair")
 
 [node name="Crosshair" parent="Game" instance=ExtResource( 1 )]
 position = Vector2( 368, 456 )

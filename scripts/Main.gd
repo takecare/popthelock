@@ -23,7 +23,7 @@ export(float) var yOffset = 74
 export(int) var level = 0
 export(int) var count = progression[0]
 
-var isPlaying: bool = false
+var is_playing: bool = false
 var crosshair_speed: float = initial_speed
 
 onready var camera: Camera2D = $Camera
@@ -34,9 +34,9 @@ onready var crosshair: Crosshair = $Game/Crosshair
 
 onready var score: Score = $Game/Score
 
-onready var lockCenter: Vector2 = lock.center.global_position
+onready var lock_center: Vector2 = lock.center.global_position
 
-var crosshairRotationDirection = -1 # 1=CW; -1=CCW
+var crosshair_rotation_direction = -1 # 1=CW; -1=CCW
 
 # should target and crosshair be children of lock?
 func _ready() -> void:
@@ -44,24 +44,24 @@ func _ready() -> void:
   target.position.y = lock.body.rect_global_position.y + yOffset
   #target.position.y = lock.center.global_position.y - lock.body.rect_size.y / 2 + yOffset
   crosshair.set_position(target.global_position)
-  score.center_on(lockCenter)
+  score.center_on(lock_center)
   score.set_score(count)
   randomize()
 
 func _process(delta: float) -> void:
-  crosshair.set_rotation_around(lockCenter, step * crosshair_speed * delta * crosshairRotationDirection)
+  crosshair.set_rotation_around(lock_center, step * crosshair_speed * delta * crosshair_rotation_direction)
 
 func _physics_process(_delta: float) -> void:
   pass
 
 func _on_Crosshair_target_hit() -> void:
-  if !isPlaying:
+  if !is_playing:
     return
   print("[MAIN] HIT score="+str(score.get_score())+", count="+str(count)+", level="+str(level)+". in progress? "+str($Game/Score.in_progress)+". resting? "+str($Game/Score.mode == 0))
   if $Game/Score.in_progress:
     return
   crosshair_speed += 3 # TODO increase speed at reasonable pace
-  crosshairRotationDirection *= -1
+  crosshair_rotation_direction *= -1
   decrease_count()
   if count == 0:
     increase_level()
@@ -78,10 +78,10 @@ func increase_level() -> void:
   count = progression[level]
   score.next_level(count) # score.set_score(count)
   # TODO next angle has to place the target in the same direction as the xhair's movement
-  target.set_rotation_around(lockCenter, randi() % 360)
+  target.set_rotation_around(lock_center, randi() % 360)
 
 func _on_Crosshair_target_missed() -> void:
-  if !isPlaying:
+  if !is_playing:
     return
   # TODO go to menu
   crosshair_speed = initial_speed
@@ -92,7 +92,7 @@ func _on_Crosshair_target_missed() -> void:
 
 func reset_target() -> void:
   #score.reset()
-  target.set_rotation_around(lockCenter, 0)
+  target.set_rotation_around(lock_center, 0)
   # ^ it seems that rotation is cumulative so when we call set_rotation_around(x)
   # we're just adding to the rotation that is already there
 
@@ -122,4 +122,4 @@ func _unhandled_key_input(event: InputEventKey) -> void:
 func _on_StartButton_tapped(origin: FadeButton) -> void:
   origin.fade_out()
   camera.zoom_in()
-  isPlaying = true
+  is_playing = true
