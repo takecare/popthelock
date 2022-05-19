@@ -96,6 +96,11 @@ func reset_target() -> void:
   # ^ it seems that rotation is cumulative so when we call set_rotation_around(x)
   # we're just adding to the rotation that is already there
 
+func _on_StartButton_tapped(origin: FadeButton) -> void:
+  origin.fade_out()
+  camera.zoom_in()
+  is_playing = true
+
 func _unhandled_key_input(event: InputEventKey) -> void:
   if event.echo || event.pressed: return
   if event.scancode == KEY_Z:
@@ -119,7 +124,4 @@ func _unhandled_key_input(event: InputEventKey) -> void:
     _on_Crosshair_target_missed()
     get_tree().set_input_as_handled()
 
-func _on_StartButton_tapped(origin: FadeButton) -> void:
-  origin.fade_out()
-  camera.zoom_in()
-  is_playing = true
+
