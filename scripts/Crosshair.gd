@@ -22,8 +22,8 @@ func _physics_process(_delta: float) -> void:
 # can say that it's only a hit if the crosshair is overlapping all 3 areas (or 2)
 # instead of just one
 
-func set_rotation_around(point: Vector2, angle: float):
-  .set_rotation_around(point, angle)
+func increase_rotation_around(point: Vector2, angle: float):
+  .increase_rotation_around(point, angle)
 #  print("> XHAIR: set rotation to " + str(angle))
 
 func _on_Target_area_entered(_area: Area2D) -> void:
