@@ -23,8 +23,7 @@ func _physics_process(_delta: float) -> void:
 # instead of just one
 
 func increase_rotation_around(point: Vector2, angle: float):
-  .increase_rotation_around(point, angle)
-#  print("> XHAIR: set rotation to " + str(angle))
+  .set_rotation_around(point, angle)
 
 func _on_Target_area_entered(_area: Area2D) -> void:
   is_inside = true

@@ -16,7 +16,7 @@ extends Node2D
 
 const progression = [1, 3, 5, 7, 9, 11, 13]
 
-export(float) var initial_speed = 15
+export(float) var initial_speed = 1
 export(float) var rotation_step = 5
 export(float) var yOffset = 74
 
@@ -47,10 +47,13 @@ func _ready() -> void:
   score.center_on(lock_center)
   score.set_score(count)
   randomize()
+  target.set_rotation_around(lock_center, deg2rad(180))
 
 func _process(delta: float) -> void:
   if should_crosshair_rotate:
-    var angle = rotation_step * crosshair_speed * delta * crosshair_rotation_direction
+    var _angle = rotation_step * crosshair_speed * delta * crosshair_rotation_direction
+    #var angle = angle + 0.25 * delta
+    var angle = crosshair_speed * delta * crosshair_rotation_direction
     crosshair.increase_rotation_around(lock_center, angle)
 
 func _physics_process(_delta: float) -> void:
@@ -62,8 +65,6 @@ func _on_Crosshair_target_hit() -> void:
   print("[MAIN] HIT score="+str(score.get_score())+", count="+str(count)+", level="+str(level)+". in progress? "+str($Game/Score.in_progress)+". resting? "+str($Game/Score.mode == 0))
   if $Game/Score.in_progress:
     return
-  crosshair_speed += 3 # TODO increase speed at reasonable pace
-  crosshair_rotation_direction *= -1
   decrease_count()
   if count == 0:
     increase_level()
@@ -77,10 +78,14 @@ func increase_level() -> void:
   level += 1
   if level >= len(progression):
       return
+
+  crosshair_speed += initial_speed # TODO increase speed at reasonable pace
+  crosshair_rotation_direction *= -1
+
   count = progression[level]
   score.next_level(count) # score.set_score(count)
   # TODO next angle has to place the target in the same direction as the xhair's movement
-  target.set_rotation_around(lock_center, randi() % 360)
+  target.set_rotation_around(lock_center, deg2rad(randi() % 360))
 
 func _on_Crosshair_target_missed() -> void:
   if !is_playing:
@@ -95,7 +100,7 @@ func _on_Crosshair_target_missed() -> void:
 func reset_target() -> void:
   #score.reset()
   should_crosshair_rotate = false
-  target.set_rotation_around(lock_center, 0)
+  target.reset()
   # ^ it seems that rotation is cumulative so when we call set_rotation_around(x)
   # we're just adding to the rotation that is already there
 
