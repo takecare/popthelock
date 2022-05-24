@@ -1,6 +1,13 @@
 extends Area2D
 
+# the last point around which we were rotated. we use this to offer a reset()
+# that reverts the total rotation to place this area2d back where it was
+var _last_point: Vector2
+
+# the total by which we've rotated so far. we use this to offer a reset()
+# that reverts the total rotation to place this area2d back where it was
 var _cumulative_rotation: float = 0.0
+
 
 func increase_rotation_around_by(point: Vector2, angle: float):
   _rotate(point, angle)
@@ -9,6 +16,7 @@ func _rotate(around: Vector2, angle: float):
   _rotate_around(around, angle)
   _rotate_facing(around)
   _cumulative_rotation += angle
+  _last_point = around
 
 
 func _rotate_around(point: Vector2, angle: float):
@@ -25,10 +33,13 @@ func _rotate_facing(point: Vector2):
   rotation = atan2(distY, distX) + deg2rad(90)
 
 
-func reset_rotation(around: Vector2) -> void:
+func reset() -> void:
+  _reset_rotation(_last_point)
+
+
+func _reset_rotation(around: Vector2) -> void:
  # TODO find current angle
   var angle = _angle(around)
-  print(_cumulative_rotation)
   _rotate(around, -_cumulative_rotation)
 
 
