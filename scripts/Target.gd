@@ -9,6 +9,7 @@ export(NodePath) var crosshair_path = null
 onready var crosshair = get_node(crosshair_path) if crosshair_path != null else null
 onready var crosshair_name = crosshair.name if crosshair != null else ""
 
+# the last point around which this target was rotated
 var _last_point: Vector2
 
 func _ready() -> void:
@@ -19,8 +20,8 @@ func _on_area_entered(area: Area2D) -> void:
     pass
   pass
 
-func set_rotation_around(point: Vector2, angle: float):
-  .set_rotation_around(point, angle)
+func increase_rotation_around_by(point: Vector2, angle: float):
+  .increase_rotation_around_by(point, angle)
   _last_point = point
 
 func reset() -> void:

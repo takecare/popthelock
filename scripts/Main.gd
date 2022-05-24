@@ -47,14 +47,13 @@ func _ready() -> void:
   score.center_on(lock_center)
   score.set_score(count)
   randomize()
-  target.set_rotation_around(lock_center, deg2rad(180))
 
 func _process(delta: float) -> void:
   if should_crosshair_rotate:
     var _angle = rotation_step * crosshair_speed * delta * crosshair_rotation_direction
     #var angle = angle + 0.25 * delta
     var angle = crosshair_speed * delta * crosshair_rotation_direction
-    crosshair.increase_rotation_around(lock_center, angle)
+    crosshair.increase_rotation_around_by(lock_center, angle)
 
 func _physics_process(_delta: float) -> void:
   pass
@@ -85,7 +84,7 @@ func increase_level() -> void:
   count = progression[level]
   score.next_level(count) # score.set_score(count)
   # TODO next angle has to place the target in the same direction as the xhair's movement
-  target.set_rotation_around(lock_center, deg2rad(randi() % 360))
+  target.increase_rotation_around_by(lock_center, deg2rad(randi() % 360))
 
 func _on_Crosshair_target_missed() -> void:
   if !is_playing:
