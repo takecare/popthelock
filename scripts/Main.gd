@@ -37,6 +37,8 @@ onready var target: Target = $Game/Target
 
 onready var score: Score = $Game/Score
 
+onready var start_button: FadeButton = $GUI/HBox/StartButton
+
 
 func _ready() -> void:
   target.set_position(
@@ -50,28 +52,32 @@ func _ready() -> void:
   score.set_score(count)
   randomize()
 
+
 func _process(delta: float) -> void:
   if should_crosshair_rotate:
     var angle = crosshair_speed * delta * crosshair_rotation_direction
     crosshair.increase_rotation_around_by(lock_center, angle)
 
+
 func _physics_process(_delta: float) -> void:
   pass
+
 
 func _on_Crosshair_target_hit() -> void:
   if !is_playing:
     return
-  print("[MAIN] HIT score="+str(score.get_score())+", count="+str(count)+", level="+str(level)+". in progress? "+str($Game/Score.in_progress)+". resting? "+str($Game/Score.mode == 0))
   if $Game/Score.in_progress:
     return
   decrease_count()
   if count == 0:
     increase_level()
 
+
 func decrease_count() -> void:
   count -= 1
   #var fastforward = true if count == 0 else false
   score.decrease()
+
 
 func increase_level() -> void:
   level += 1
@@ -85,25 +91,37 @@ func increase_level() -> void:
   # TODO next angle has to place the target in the same direction as the xhair's movement
   target.increase_rotation_around_by(lock_center, deg2rad(randi() % 360))
 
+
 func _on_Crosshair_target_missed() -> void:
   if !is_playing:
     return
-  # TODO go to menu
+  back_to_()
   crosshair_speed = initial_speed
   level = 0
   count = progression[level]
   score.set_score(count)
   reset_target()
 
+
 func reset_target() -> void:
+  # TODO slowdown crosshair's movement instead of stopping outright
   should_crosshair_rotate = false
   target.reset()
+
 
 func _on_StartButton_tapped(origin: FadeButton) -> void:
   origin.fade_out()
   camera.zoom_in()
   is_playing = true
 
+
+func back_to_() -> void:
+  start_button.fade_in()
+  camera.zoom_out()
+  is_playing = false
+
+
+# debugging utilities
 func _unhandled_key_input(event: InputEventKey) -> void:
   if event.echo || event.pressed: return
   if event.scancode == KEY_Z:
@@ -114,6 +132,9 @@ func _unhandled_key_input(event: InputEventKey) -> void:
     get_tree().set_input_as_handled()
   elif event.scancode == KEY_P:
     _on_StartButton_tapped($GUI/HBox/StartButton)
+    get_tree().set_input_as_handled()
+  elif event.scancode == KEY_O:
+    # TODO reverse starting animations
     get_tree().set_input_as_handled()
   elif event.scancode == KEY_H:
     _on_Crosshair_target_hit()
