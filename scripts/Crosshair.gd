@@ -5,8 +5,10 @@ signal on_target_missed
 
 var is_inside: bool = false
 
+
 func _ready() -> void:
   pass
+
 
 func _physics_process(_delta: float) -> void:
   if !Input.is_action_just_pressed("click"):

@@ -19,8 +19,10 @@ func center_on(_point: Vector2) -> void:
   currentScoreLayer.center_on(_point)
   nextScoreLayer.center_on(_point)
 
+
 func get_score() -> int:
   return currentScoreLayer.get_score()
+
 
 # state for the current score, it can be
 # RESTING: nothing is happening
@@ -30,6 +32,7 @@ func get_score() -> int:
 enum Mode { RESTING, INCREASING, DECREASING, NEXT_LEVEL }
 var mode = Mode.RESTING
 
+
 func set_score(new: int) -> void:
   # we need to check if it's null because the first time this runs,
   # currentScoreLayer is not yet set
@@ -38,16 +41,19 @@ func set_score(new: int) -> void:
   currentScoreLayer.set_score(new)
   score = new
 
+
 func next_level(new: int) -> void:
   mode = Mode.NEXT_LEVEL
   #currentScoreLayer.set_score(new) #currentScoreLayer.animate_to(new)
   score = new
+
 
 func increase() -> void:
   mode = Mode.INCREASING
   nextScoreLayer.set_score(score + 1)
   currentScoreLayer.disappear()
   nextScoreLayer.appear()
+
 
 # ff = fastforward: useful when going from 1 to 0,
 # so we can animate from 0 to NEW quickly
@@ -57,19 +63,24 @@ func decrease(ff: bool = false) -> void:
   currentScoreLayer.disappear(ff)
   nextScoreLayer.appear(ff)
 
+
 func reset() -> void:
   # TODO animate counting down until 0
   set_score(0)
   currentScoreLayer.reset()
   nextScoreLayer.reset(false)
 
+
 func _current_appeared() -> void:
   pass
+
 
 func _current_disappeared() -> void:
   pass
 
+
 signal handled
+
 
 func _next_appeared() -> void:
   currentScoreLayer.reset()
@@ -86,12 +97,15 @@ func _next_appeared() -> void:
   mode = Mode.RESTING
   emit_signal("handled")
 
+
 func _next_disappeared() -> void:
   pass
+
 
 # check if any of the layers are currently animating
 func _in_progress() -> bool:
   return $CurrentScoreLayer.in_progress || $NextScoreLayer.in_progress
+
 
 # TODO debug only. remove
 func _unhandled_key_input(event: InputEventKey) -> void:

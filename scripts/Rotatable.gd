@@ -12,6 +12,7 @@ var _cumulative_rotation: float = 0.0
 func increase_rotation_around_by(point: Vector2, angle: float):
   _rotate(point, angle)
 
+
 func _rotate(around: Vector2, angle: float):
   _rotate_around(around, angle)
   _rotate_facing(around)
