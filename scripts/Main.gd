@@ -63,7 +63,7 @@ func _physics_process(_delta: float) -> void:
   pass
 
 
-func _on_Crosshair_target_hit() -> void:
+func _on_target_hit() -> void:
   if !is_playing:
     return
   if $Game/Score.in_progress:
@@ -92,7 +92,7 @@ func increase_level() -> void:
   target.increase_rotation_around_by(lock_center, deg2rad(randi() % 360))
 
 
-func _on_Crosshair_target_missed() -> void:
+func _on_target_missed() -> void:
   if !is_playing:
     return
   back_to_()
@@ -109,7 +109,7 @@ func reset_target() -> void:
   target.reset()
 
 
-func _on_StartButton_tapped(origin: FadeButton) -> void:
+func _on_start_button_tapped(origin: FadeButton) -> void:
   origin.fade_out()
   camera.zoom_in()
   is_playing = true
@@ -131,21 +131,21 @@ func _unhandled_key_input(event: InputEventKey) -> void:
     camera.zoom_out()
     get_tree().set_input_as_handled()
   elif event.scancode == KEY_P:
-    _on_StartButton_tapped($GUI/HBox/StartButton)
+    _on_start_button_tapped($GUI/HBox/StartButton)
     get_tree().set_input_as_handled()
   elif event.scancode == KEY_O:
     # TODO reverse starting animations
     get_tree().set_input_as_handled()
   elif event.scancode == KEY_H:
-    _on_Crosshair_target_hit()
+    _on_target_hit()
     get_tree().set_input_as_handled()
   elif event.scancode == KEY_Y:
-    _on_Crosshair_target_hit()
+    _on_target_hit()
     yield(get_tree().create_timer(0.28), "timeout")
-    _on_Crosshair_target_hit()
+    _on_target_hit()
     get_tree().set_input_as_handled()
   elif event.scancode == KEY_M:
-    _on_Crosshair_target_missed()
+    _on_target_missed()
     get_tree().set_input_as_handled()
 
 
