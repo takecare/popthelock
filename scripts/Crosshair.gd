@@ -4,12 +4,12 @@ signal on_target_hit
 signal on_target_missed
 
 var is_inside: bool = false
+var is_animating: bool = false
 
 
 func _ready() -> void:
-  # make sure signals like area_entered and area_exited are emitted
-  monitoring = true
-  scale = Vector2(1,1) # debug
+  monitoring = true # make sure signals like area_entered/_exited are emitted
+  scale = Vector2(0.6, 0.6) # debug
 
 
 func _physics_process(_delta: float) -> void:
@@ -21,9 +21,24 @@ func _physics_process(_delta: float) -> void:
     _target_missed()
 
 
+func increase_rotation_around_by(point: Vector2, angle: float) -> void:
+  rotate_to_face_point = !is_animating
+  .increase_rotation_around_by(point, angle)
+
+
+# FIXME the problem here is that because the crosshair is already being constantly
+# rotated as it moves around the lock, this animation gets immediately overridden
 func _target_hit() -> void:
-  $AnimationPlayer.play("rotate_right", -1, 0.2)
+  is_animating = true
+  $AnimationPlayer.connect("animation_finished", self, "_on_hit_animation_ended", [], CONNECT_ONESHOT)
+  $AnimationPlayer.play("rotate_right", -1, 0.5)
   emit_signal("on_target_hit")
+
+
+func _on_hit_animation_ended(animation_name: String) -> void:
+  is_animating = false
+  pass
+
 
 
 func _target_missed() -> void:

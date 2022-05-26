@@ -8,14 +8,18 @@ var _last_point: Vector2
 # that reverts the total rotation to place this area2d back where it was
 var _cumulative_rotation: float = 0.0
 
+# if true then this node will not only be rotated around 'point' but it will
+# also be rotated on its axis so it faces the same point at all times
+var rotate_to_face_point: bool = true
 
-func increase_rotation_around_by(point: Vector2, angle: float):
+func increase_rotation_around_by(point: Vector2, angle: float) -> void:
   _rotate(point, angle)
 
 
 func _rotate(around: Vector2, angle: float):
   _rotate_around(around, angle)
-  _rotate_facing(around)
+  if rotate_to_face_point:
+    _rotate_facing(around)
   _cumulative_rotation += angle
   _last_point = around
 
@@ -44,6 +48,9 @@ func _reset_rotation(around: Vector2) -> void:
   _rotate(around, -_cumulative_rotation)
 
 
+# TODO the idea here was to figure out out the angle that we need to rotate by
+# in order to reset the rotation of this object, without having to keep track
+# of how much we have rotated by already
 func _angle(around: Vector2) -> float:
   # cos(a) = u . v / ||u|| * ||v||
   # u . v => dot product = ux * vx + uy * vy
