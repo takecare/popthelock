@@ -9,6 +9,7 @@ export(bool) var in_progress: bool = false setget ,_in_progress
 onready var animationPlayer: AnimationPlayer = $AnimationPlayer
 onready var hBoxContainer: HBoxContainer = $HBoxContainer
 
+
 # we'll have 2 ScoreLayers - does the engine share these sprites or does it load them twice?
 const sprites = [
   preload("res://sprites/0.png"),
@@ -23,11 +24,13 @@ const sprites = [
   preload("res://sprites/9.png")
 ]
 
+
 func _ready() -> void:
   # reset aniamted properties so it doesn't matter in which position the animation is in (in the editor)
   $HBoxContainer.rect_scale = Vector2(1, 1)
   $HBoxContainer.modulate = Color(1, 1, 1, 1)
   update()
+
 
 # TODO is this needed/used?
 func center_on(point: Vector2) -> void:
@@ -35,12 +38,15 @@ func center_on(point: Vector2) -> void:
     Vector2(point.x - rect_size.x / 2, point.y - rect_size.y / 2)
   )
 
+
 func get_score() -> int:
   return score
+
 
 func set_score(new: int) -> void:
   score = new
   update()
+
 
 func animate_to(to: int) -> void:
   reset()
@@ -56,19 +62,24 @@ func animate_to(to: int) -> void:
   )
   $Tween.start()
 
+
 func appear(ff: bool = false) -> void:
   visible = true
   animationPlayer.play("Appear", -1, 2.0 if ff else 1.0)
 
+
 func _appeared() -> void:
   emit_signal("appeared")
+
 
 func disappear(ff: bool = false) -> void:
   animationPlayer.play("Disappear", -1, 2.0 if ff else 1.0)
 
+
 func _disappeared() -> void:
   emit_signal("disappeared")
   visible = false
+
 
 func reset(is_visible: bool = true) -> void:
   $AnimationPlayer.seek(0, true)
@@ -76,10 +87,10 @@ func reset(is_visible: bool = true) -> void:
   hBoxContainer.rect_scale = Vector2(1, 1)
   visible = is_visible
 
+
 # we have to reference nodes this way as this is called in the score setter,
 # which means this runs before _ready()/onready
 func update():
-  print("["+self.name+"] updating score to "+str(score))
   var digit1: TextureRect = $HBoxContainer/Digit1
   var digit2: TextureRect = $HBoxContainer/Digit2
   var digit3: TextureRect = $HBoxContainer/Digit3
@@ -104,8 +115,10 @@ func update():
     digit2.visible = true
     digit3.visible = true
 
+
 func _in_progress() -> bool:
   return $AnimationPlayer.current_animation_position > 0
+
 
 func _unhandled_key_input(event: InputEventKey) -> void:
   if event.echo || event.pressed: return
