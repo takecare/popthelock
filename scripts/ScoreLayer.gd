@@ -117,7 +117,7 @@ func update():
 
 
 func _in_progress() -> bool:
-  return $AnimationPlayer.current_animation_position > 0
+  return $AnimationPlayer.current_animation != "" and $AnimationPlayer.current_animation_position > 0
 
 
 func _unhandled_key_input(event: InputEventKey) -> void:
