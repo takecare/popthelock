@@ -101,7 +101,7 @@ func _on_start_button_tapped(origin: FadeButton) -> void:
   is_playing = true
 
 
-func back_to_() -> void:
+func back_to_() -> void: # TODO rename "back_to_menu"?
   start_button.fade_in()
   camera.zoom_out()
   is_playing = false
@@ -123,7 +123,7 @@ func _unhandled_key_input(event: InputEventKey) -> void:
     # TODO reverse starting animations
     get_tree().set_input_as_handled()
   elif event.scancode == KEY_H:
-    _on_target_hit()
+    $Game/Crosshair._target_hit()
     get_tree().set_input_as_handled()
   elif event.scancode == KEY_Y:
     _on_target_hit()
@@ -131,7 +131,7 @@ func _unhandled_key_input(event: InputEventKey) -> void:
     _on_target_hit()
     get_tree().set_input_as_handled()
   elif event.scancode == KEY_M:
-    _on_target_missed()
+    $Game/Crosshair._target_missed()
     get_tree().set_input_as_handled()
 
 
