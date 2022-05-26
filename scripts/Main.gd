@@ -1,20 +1,6 @@
 extends Node2D
 
-# game basics
-# TODO add shackle part of the lock
-# TODO track level, which determines the angle range in which the target is placed
-# TODO animate target disappearing and reappearing
-# TODO animate crosshair hitting and missing
-# TODO screenshake on hit
-# TODO dying animation
-# TODO add sound
-
-# extra mile
-# TODO score is no longer updated on 1 increments. it's derived from how much of
-# the crosshair is within the target so, for a given hit, your score can go from
-# 0 to 10 (as an example)
-
-const progression = [1, 3, 5, 7, 9, 11, 13]
+const progression = [1, 3, 5, 7, 9, 11, 13, 15]
 
 export(int) var level = 0
 export(int) var count = progression[0]
