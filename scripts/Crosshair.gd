@@ -7,7 +7,8 @@ var is_inside: bool = false
 
 
 func _ready() -> void:
-  pass
+  # make sure signals like area_entered and area_exited are emitted
+  monitoring = true
 
 
 func _physics_process(_delta: float) -> void:
@@ -25,9 +26,13 @@ func _physics_process(_delta: float) -> void:
 # instead of just one
 
 
-func _on_Target_area_entered(_area: Area2D) -> void:
+# to be connected to Target's area_entered signal, letting us know that an area2d
+# has entered its (Target's) area2d. we don't actually check which area2d it is
+# because at any moment in the game, we only have two overlapping area2d
+# (crosshair and target areas)
+func _on_target_area_entered(_area: Area2D) -> void:
   is_inside = true
 
 
-func _on_Target_area_exited(_area: Area2D) -> void:
+func _on_target_area_exited(_area: Area2D) -> void:
   is_inside = false

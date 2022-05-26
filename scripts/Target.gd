@@ -11,9 +11,12 @@ onready var crosshair_name = crosshair.name if crosshair != null else ""
 
 
 func _ready() -> void:
-  pass
+  # make sure signals like area_entered and area_exited are emitted
+  monitoring = true
 
 
+# this is not needed as we're handling the crosshair entering/exiting Target's
+# area in the Crosshair script
 func _on_area_entered(area: Area2D) -> void:
   if area.name == crosshair_name:
     pass
