@@ -20,11 +20,14 @@ onready var lock_center: Vector2 = lock.center.global_position
 
 export(float) var target_radius = 74 # distance from the lock center
 onready var target: Target = $Game/Target
+var min_angle_deg: float = 30
+var max_angle_deg: float = 60
 
 onready var score: Score = $Game/Score
 
 onready var start_button: FadeButton = $GUI/HBox/StartButton
 
+onready var random: RandomNumberGenerator = RandomNumberGenerator.new()
 
 func _ready() -> void:
   target.set_position(
@@ -36,7 +39,8 @@ func _ready() -> void:
   crosshair.set_position(target.global_position)
   score.center_on(lock_center)
   score.set_score(count)
-  randomize()
+  replace_target()
+  random.randomize()
 
 
 func _process(delta: float) -> void:
@@ -50,13 +54,22 @@ func _physics_process(_delta: float) -> void:
 
 
 func _on_target_hit() -> void:
-  if !is_playing:
+  if !is_playing or $Game/Score.in_progress:
     return
-  if $Game/Score.in_progress:
-    return
+  replace_target()
   decrease_count()
   if count == 0:
     increase_level()
+
+func replace_target() -> void:
+  crosshair_rotation_direction *= -1
+  print(min_angle_deg, " ", max_angle_deg)
+  var angle = deg2rad(random.randf_range(min_angle_deg, max_angle_deg))
+  var signed_angle = crosshair_rotation_direction * angle
+  target.increase_rotation_around_by(lock_center, signed_angle)
+  var s = 1 if random.randf() > 0.5 else -1
+  min_angle_deg += random.randf_range(5, 25) * s
+  max_angle_deg += random.randf_range(5, 25) * -s
 
 
 func decrease_count() -> void:
@@ -70,12 +83,8 @@ func increase_level() -> void:
   if level >= len(progression):
       return
   crosshair_speed += initial_speed # TODO increase speed at reasonable pace
-  crosshair_rotation_direction *= -1
-
   count = progression[level]
   score.next_level(count) # score.set_score(count)
-  # TODO next angle has to place the target in the same direction as the xhair's movement
-  target.increase_rotation_around_by(lock_center, deg2rad(randi() % 360))
 
 
 func _on_target_missed() -> void:
