@@ -1,6 +1,7 @@
 extends Node2D
 
-const progression = [1, 3, 5, 7, 9, 11, 13, 15]
+const progression = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] # TODO fill this in
+const speed_step = 0.1
 
 export(int) var level = 0
 export(int) var count = progression[0]
@@ -8,10 +9,9 @@ export(int) var count = progression[0]
 var is_playing: bool = false
 
 onready var crosshair: Crosshair = $Game/Crosshair
-export(float) var initial_speed = 1
 var crosshair_rotation_direction = -1 # 1=CW; -1=CCW # TODO should be enum and eport
 var should_crosshair_rotate: bool = true
-var crosshair_speed: float = initial_speed
+var crosshair_speed: float = 1
 
 onready var camera: Camera2D = $Camera
 
@@ -61,6 +61,7 @@ func _on_target_hit() -> void:
   if count == 0:
     increase_level()
 
+
 func replace_target() -> void:
   crosshair_rotation_direction *= -1
   print(min_angle_deg, " ", max_angle_deg)
@@ -82,7 +83,7 @@ func increase_level() -> void:
   level += 1
   if level >= len(progression):
       return
-  crosshair_speed += initial_speed # TODO increase speed at reasonable pace
+  crosshair_speed += speed_step
   count = progression[level]
   score.next_level(count) # score.set_score(count)
 
@@ -91,9 +92,9 @@ func _on_target_missed() -> void:
   if !is_playing:
     return
   back_to_()
-  crosshair_speed = initial_speed
   level = 0
   count = progression[level]
+  crosshair_speed = 1
   score.set_score(count)
   reset_target()
 
