@@ -9,7 +9,9 @@ var is_animating: bool = false
 
 func _ready() -> void:
   monitoring = true # make sure signals like area_entered/_exited are emitted
-  scale = Vector2(0.6, 0.6) # debug
+  $Sprite.visible = true
+  $SmallerSprite.visible = false # used for animation only
+  #scale = Vector2(0.6, 0.6) # debug
 
 
 func _physics_process(_delta: float) -> void:
@@ -31,7 +33,7 @@ func increase_rotation_around_by(point: Vector2, angle: float) -> void:
 func _target_hit() -> void:
   is_animating = true
   $AnimationPlayer.connect("animation_finished", self, "_on_hit_animation_ended", [], CONNECT_ONESHOT)
-  $AnimationPlayer.play("rotate_right", -1, 0.5)
+  $AnimationPlayer.play("hit", -1, 1.5)
   emit_signal("on_target_hit")
 
 

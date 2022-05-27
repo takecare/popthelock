@@ -55,7 +55,7 @@ func _angle(around: Vector2) -> float:
   # cos(a) = u . v / ||u|| * ||v||
   # u . v => dot product = ux * vx + uy * vy
   # ||u|| = length of u = sqrt(ux^2 + uy^2)
-  # acos()
+  # a = acos(u . v / ||u|| * ||v||)
   # u -> (0, radius)
   # v -> (posX - centerX, posY - centerY)
 

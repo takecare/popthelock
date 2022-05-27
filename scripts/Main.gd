@@ -9,7 +9,7 @@ var is_playing: bool = false
 
 onready var crosshair: Crosshair = $Game/Crosshair
 export(float) var initial_speed = 1
-var crosshair_rotation_direction = -1 # 1=CW; -1=CCW
+var crosshair_rotation_direction = -1 # 1=CW; -1=CCW # TODO should be enum and eport
 var should_crosshair_rotate: bool = true
 var crosshair_speed: float = initial_speed
 

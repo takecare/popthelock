@@ -117,7 +117,7 @@ scale = Vector2( 0.15, 0.15 )
 
 [node name="Crosshair" parent="Game" instance=ExtResource( 1 )]
 position = Vector2( 368, 456 )
-scale = Vector2( 0.15, 0.15 )
+scale = Vector2( 0.3, 0.3 )
 
 [node name="Score" parent="Game" instance=ExtResource( 4 )]
 position = Vector2( 232, 524 )
