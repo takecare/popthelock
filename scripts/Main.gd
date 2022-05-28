@@ -64,9 +64,9 @@ func _on_target_hit() -> void:
 
 func replace_target() -> void:
   crosshair_rotation_direction *= -1
-  print(min_angle_deg, " ", max_angle_deg)
-  var angle = deg2rad(random.randf_range(min_angle_deg, max_angle_deg))
-  var signed_angle = crosshair_rotation_direction * angle
+  var angle_deg = random.randf_range(min_angle_deg, max_angle_deg)
+  var signed_angle = crosshair_rotation_direction * deg2rad(angle_deg)
+  print(min_angle_deg, " ", max_angle_deg, " ", angle_deg)
   target.increase_rotation_around_by(lock_center, signed_angle)
   var s = 1 if random.randf() > 0.5 else -1
   min_angle_deg += random.randf_range(5, 25) * s
@@ -75,7 +75,6 @@ func replace_target() -> void:
 
 func decrease_count() -> void:
   count -= 1
-  #var fastforward = true if count == 0 else false
   score.decrease()
 
 
