@@ -43,7 +43,6 @@ func reset() -> void:
 
 
 func _reset_rotation(around: Vector2) -> void:
- # TODO find current angle
   var angle = _angle(around)
   _rotate(around, -_cumulative_rotation)
 

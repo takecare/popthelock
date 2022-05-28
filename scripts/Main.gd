@@ -36,7 +36,7 @@ func _ready() -> void:
       lock.body.rect_global_position.y + target_radius
     )
   )
-  crosshair.set_position(target.global_position)
+  #crosshair.set_position(target.global_position)
   score.center_on(lock_center)
   score.set_score(count)
   replace_target()
@@ -45,8 +45,13 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
   if should_crosshair_rotate:
-    var angle = crosshair_speed * delta * crosshair_rotation_direction
-    crosshair.increase_rotation_around_by(lock_center, angle)
+    _move_crosshair(delta)
+
+
+func _move_crosshair(delta: float) -> void:
+  var angle = crosshair_speed * delta * crosshair_rotation_direction
+  crosshair.increase_rotation_around_by(lock_center, angle)
+  $Game/CrosshairDebug.increase_rotation_around_by(lock_center, angle)
 
 
 func _physics_process(_delta: float) -> void:
@@ -54,6 +59,7 @@ func _physics_process(_delta: float) -> void:
 
 
 func _on_target_hit() -> void:
+# warning-ignore:unsafe_property_access
   if !is_playing or $Game/Score.in_progress:
     return
   replace_target()
@@ -66,7 +72,6 @@ func replace_target() -> void:
   crosshair_rotation_direction *= -1
   var angle_deg = random.randf_range(min_angle_deg, max_angle_deg)
   var signed_angle = crosshair_rotation_direction * deg2rad(angle_deg)
-  print(min_angle_deg, " ", max_angle_deg, " ", angle_deg)
   target.increase_rotation_around_by(lock_center, signed_angle)
   var s = 1 if random.randf() > 0.5 else -1
   min_angle_deg += random.randf_range(5, 25) * s
@@ -106,6 +111,7 @@ func reset_target() -> void:
 
 func _on_start_button_tapped(origin: FadeButton) -> void:
   origin.fade_out()
+# warning-ignore:unsafe_method_access
   camera.zoom_in()
   is_playing = true
 
@@ -142,5 +148,3 @@ func _unhandled_key_input(event: InputEventKey) -> void:
   elif event.scancode == KEY_M:
     $Game/Crosshair._target_missed()
     get_tree().set_input_as_handled()
-
-
