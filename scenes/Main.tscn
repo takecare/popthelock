@@ -124,6 +124,7 @@ position = Vector2( 360, 456 )
 scale = Vector2( 0.3, 0.3 )
 
 [node name="Body" parent="Game" instance=ExtResource( 9 )]
+visible = false
 position = Vector2( 360, 456 )
 scale = Vector2( 0.3, 0.3 )
 

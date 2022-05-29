@@ -11,8 +11,8 @@ func _ready() -> void:
 
 
 func increase_rotation_around_by(point: Vector2, angle: float) -> void:
-  var offset_point = point - position
-  body.increase_rotation_around_by(offset_point, angle)
+  #var offset_point = point - position
+  body.increase_rotation_around_by(point, angle)
   pass
 
 func _target_hit() -> void:

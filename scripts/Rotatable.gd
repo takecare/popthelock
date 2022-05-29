@@ -26,16 +26,16 @@ func _rotate(around: Vector2, angle: float):
 
 func _rotate_around(point: Vector2, angle: float):
   print(get_parent().get_name(), " : point=", point, " position=", position, " global_pos=", global_position)
-  var distX = position.x - point.x
-  var distY = position.y - point.y
+  var distX = global_position.x - point.x
+  var distY = global_position.y - point.y
   var rotatedX = cos(angle) * distX - sin(angle) * distY + point.x;
   var rotatedY = sin(angle) * distX + cos(angle) * distY + point.y;
-  position = Vector2(rotatedX, rotatedY)
+  global_position = Vector2(rotatedX, rotatedY)
 
 
 func _rotate_facing(point: Vector2):
-  var distX = position.x - point.x
-  var distY = position.y - point.y
+  var distX = global_position.x - point.x
+  var distY = global_position.y - point.y
   rotation = atan2(distY, distX) + deg2rad(90)
 
 
@@ -44,7 +44,6 @@ func reset() -> void:
 
 
 func _reset_rotation(around: Vector2) -> void:
-  var angle = _angle(around)
   _rotate(around, -_cumulative_rotation)
 
 

@@ -13,7 +13,6 @@ func _ready() -> void:
   monitoring = true # make sure signals like area_entered/_exited are emitted
   $Sprite.visible = true
   $SmallerSprite.visible = false # used for animation only
-  #scale = Vector2(0.6, 0.6) # debug
 
 
 func _physics_process(_delta: float) -> void:

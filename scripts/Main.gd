@@ -42,6 +42,9 @@ func _ready() -> void:
   score.set_score(count)
   replace_target()
   random.randomize()
+  # debug:
+  yield(get_tree().create_timer(0.2), "timeout")
+  _on_start_button_tapped($GUI/HBox/StartButton)
 
 
 func _process(delta: float) -> void:
@@ -51,8 +54,8 @@ func _process(delta: float) -> void:
 
 func _move_crosshair(delta: float) -> void:
   var angle = crosshair_speed * delta * crosshair_rotation_direction
-  crosshair.increase_rotation_around_by(lock_center, angle)
-  $Game/Body.increase_rotation_around_by(lock_center, angle)
+  crosshair.increase_rotation_around_by(lock_center, angle)  # incorrect rotation
+  $Game/Body.increase_rotation_around_by(lock_center, angle) # correct rotation
 
 
 func _physics_process(_delta: float) -> void:
