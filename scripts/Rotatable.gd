@@ -25,7 +25,6 @@ func _rotate(around: Vector2, angle: float):
 
 
 func _rotate_around(point: Vector2, angle: float):
-  print(get_parent().get_name(), " : point=", point, " position=", position, " global_pos=", global_position)
   var distX = global_position.x - point.x
   var distY = global_position.y - point.y
   var rotatedX = cos(angle) * distX - sin(angle) * distY + point.x;

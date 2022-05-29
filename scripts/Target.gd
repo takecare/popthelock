@@ -15,10 +15,20 @@ func _ready() -> void:
   monitoring = true
 
 
-# this is not needed as we're handling the crosshair entering/exiting Target's
-# area in the Crosshair script
 func _on_area_entered(area: Area2D) -> void:
+  print("[target] area entered: ", area.name)
   if area.name == crosshair_name:
     pass
   pass
 
+
+func _on_area_exited(area: Area2D) -> void:
+  print("[target] area exited: ", area.name)
+  pass
+
+
+func _on_area_shape_entered(area_id: int, area: Area2D, area_shape: int, local_shape: int) -> void:
+  print("[target] area shape entered: ", area.name)
+
+func _on_area_shape_exited(area_id: int, area: Area2D, area_shape: int, local_shape: int) -> void:
+  print("[target] area shape exited: ", area.name)

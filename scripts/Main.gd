@@ -11,7 +11,7 @@ var is_playing: bool = false
 onready var crosshair = $Game/Crosshair
 var crosshair_rotation_direction = -1 # 1=CW; -1=CCW # TODO should be enum and eport
 var should_crosshair_rotate: bool = true
-var crosshair_speed: float = 1
+var crosshair_speed: float = 0.3
 
 onready var camera: Camera2D = $Camera
 
@@ -38,8 +38,8 @@ func _ready() -> void:
   )
   score.center_on(lock_center)
   score.set_score(count)
-  replace_target()
   random.randomize()
+  replace_target()
   # debug:
   yield(get_tree().create_timer(0.2), "timeout")
   _on_start_button_tapped($GUI/HBox/StartButton)
@@ -62,6 +62,7 @@ func _physics_process(_delta: float) -> void:
 func _on_target_hit() -> void:
   if !is_playing or $Game/Score.in_progress:
     return
+  print("> target hit!")
   replace_target()
   decrease_count()
   if count == 0:
@@ -95,6 +96,7 @@ func increase_level() -> void:
 func _on_target_missed() -> void:
   if !is_playing:
     return
+  print("> target missed!")
   back_to_()
   level = 0
   count = progression[level]

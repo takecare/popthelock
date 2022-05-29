@@ -18,3 +18,6 @@ anims/rotate_right = ExtResource( 3 )
 [node name="Sprite" type="Sprite" parent="."]
 visible = false
 texture = ExtResource( 6 )
+
+[connection signal="on_target_hit" from="Body" to="." method="_target_hit"]
+[connection signal="on_target_missed" from="Body" to="." method="_target_missed"]
