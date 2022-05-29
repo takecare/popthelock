@@ -8,7 +8,6 @@ export(int) var count = progression[0]
 
 var is_playing: bool = false
 
-#onready var crosshair = $Game/Body
 onready var crosshair = $Game/Crosshair
 var crosshair_rotation_direction = -1 # 1=CW; -1=CCW # TODO should be enum and eport
 var should_crosshair_rotate: bool = true
@@ -37,7 +36,6 @@ func _ready() -> void:
       lock.body.rect_global_position.y + target_radius
     )
   )
-  #crosshair.set_position(target.global_position)
   score.center_on(lock_center)
   score.set_score(count)
   replace_target()
@@ -54,8 +52,7 @@ func _process(delta: float) -> void:
 
 func _move_crosshair(delta: float) -> void:
   var angle = crosshair_speed * delta * crosshair_rotation_direction
-  crosshair.increase_rotation_around_by(lock_center, angle)  # incorrect rotation
-  $Game/Body.increase_rotation_around_by(lock_center, angle) # correct rotation
+  crosshair.increase_rotation_around_by(lock_center, angle)
 
 
 func _physics_process(_delta: float) -> void:
@@ -92,7 +89,7 @@ func increase_level() -> void:
       return
   crosshair_speed += speed_step
   count = progression[level]
-  score.next_level(count) # score.set_score(count)
+  score.next_level(count)
 
 
 func _on_target_missed() -> void:
