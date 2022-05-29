@@ -62,3 +62,6 @@ func _on_target_area_entered(_area: Area2D) -> void:
 
 func _on_target_area_exited(_area: Area2D) -> void:
   is_inside = false
+
+func _draw() -> void:
+  draw_circle(position, 25.0, Color.blue)

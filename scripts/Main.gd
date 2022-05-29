@@ -8,7 +8,8 @@ export(int) var count = progression[0]
 
 var is_playing: bool = false
 
-onready var crosshair: Crosshair = $Game/Crosshair
+#onready var crosshair = $Game/Body
+onready var crosshair = $Game/Crosshair
 var crosshair_rotation_direction = -1 # 1=CW; -1=CCW # TODO should be enum and eport
 var should_crosshair_rotate: bool = true
 var crosshair_speed: float = 1
@@ -51,7 +52,7 @@ func _process(delta: float) -> void:
 func _move_crosshair(delta: float) -> void:
   var angle = crosshair_speed * delta * crosshair_rotation_direction
   crosshair.increase_rotation_around_by(lock_center, angle)
-  $Game/CrosshairDebug.increase_rotation_around_by(lock_center, angle)
+  $Game/Body.increase_rotation_around_by(lock_center, angle)
 
 
 func _physics_process(_delta: float) -> void:
@@ -59,7 +60,6 @@ func _physics_process(_delta: float) -> void:
 
 
 func _on_target_hit() -> void:
-# warning-ignore:unsafe_property_access
   if !is_playing or $Game/Score.in_progress:
     return
   replace_target()
@@ -111,7 +111,6 @@ func reset_target() -> void:
 
 func _on_start_button_tapped(origin: FadeButton) -> void:
   origin.fade_out()
-# warning-ignore:unsafe_method_access
   camera.zoom_in()
   is_playing = true
 

@@ -6,12 +6,13 @@ signal on_target_missed
 onready var body: CrosshairBody = $Body
 
 func _ready() -> void:
-  #body.position = position
+  #body.position = Vector2(200,200)
   pass
 
 
 func increase_rotation_around_by(point: Vector2, angle: float) -> void:
-  $Body.increase_rotation_around_by(position, angle)
+  var offset_point = point - position
+  body.increase_rotation_around_by(offset_point, angle)
   pass
 
 func _target_hit() -> void:
@@ -28,4 +29,4 @@ func _target_missed() -> void:
 
 
 func _draw() -> void:
-  draw_circle(position, 10.0, Color.red)
+  draw_circle(position, 25.0, Color.red)
