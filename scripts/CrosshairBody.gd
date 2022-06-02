@@ -9,7 +9,7 @@ var is_inside: bool = false
 
 
 func _ready() -> void:
-  monitoring = true # make sure signals like area_entered/_exited are emitted
+  monitoring = true
   $Sprite.visible = true
   $SmallerSprite.visible = false # used for animation only
 
@@ -17,15 +17,10 @@ func _ready() -> void:
 func _physics_process(_delta: float) -> void:
   if !Input.is_action_just_pressed("click"):
     return
-
-  var collisions = get_overlapping_areas()
-  for c in collisions:
-    print("> colliding with: ", c.name)
-
-  if is_inside:
-    _target_hit()
-  else:
-    _target_missed()
+#  if is_inside:
+#    _target_hit()
+#  else:
+#    _target_missed()
 
 
 func increase_rotation_around_by(point: Vector2, angle: float) -> void:
@@ -50,14 +45,13 @@ func _target_missed() -> void:
 # has entered its (Target's) area2d. we don't actually check which area2d it is
 # because at any moment in the game, we only have two overlapping area2d
 # (crosshair and target areas)
-func _on_target_area_entered(_area: Area2D) -> void:
-
+func _on_target_area_entered() -> void:
+  print("[xhair body] area entered")
   is_inside = true
 
 
-func _on_target_area_exited(_area: Area2D) -> void:
-  print("[xhair body] area exited: ", _area.name)
-
+func _on_target_area_exited() -> void:
+  print("[xhair body] area exited")
   is_inside = false
 
 

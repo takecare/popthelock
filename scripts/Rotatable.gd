@@ -12,6 +12,11 @@ var _cumulative_rotation: float = 0.0
 # also be rotated on its axis so it faces the same point at all times
 var rotate_to_face_point: bool = true
 
+
+func _ready() -> void:
+  monitoring = true
+
+
 func increase_rotation_around_by(point: Vector2, angle: float) -> void:
   _rotate(point, angle)
 

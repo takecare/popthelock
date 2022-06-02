@@ -3,17 +3,26 @@ class_name Crosshair extends Node2D
 signal on_target_hit
 signal on_target_missed
 
-onready var body: CrosshairBody = $Body
+onready var body := $Body
 
 var is_animating: bool = false
+var is_inside: bool = false
 
 func _ready() -> void:
   pass
 
 
 func increase_rotation_around_by(point: Vector2, angle: float) -> void:
-  #rotate_to_face_point = !is_animating
   body.increase_rotation_around_by(point, angle)
+
+
+func _physics_process(_delta: float) -> void:
+  if !Input.is_action_just_pressed("click"):
+    return
+  if is_inside:
+    _target_hit()
+  else:
+    _target_missed()
 
 
 func _target_hit() -> void:
@@ -31,12 +40,16 @@ func _target_missed() -> void:
   emit_signal("on_target_missed")
 
 
-func _on_target_area_entered(_area: Area2D) -> void:
-  $Body._on_target_area_entered(_area)
+func _on_target_area_entered() -> void:
+#  $Body._on_target_area_entered()
+  is_inside = true
+  pass
 
 
-func _on_target_area_exited(_area: Area2D) -> void:
-  $Body._on_target_area_exited(_area)
+func _on_target_area_exited() -> void:
+#  $Body._on_target_area_exited()
+  is_inside = false
+  pass
 
 
 func _draw() -> void:
