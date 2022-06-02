@@ -62,7 +62,6 @@ func _physics_process(_delta: float) -> void:
 func _on_target_hit() -> void:
   if !is_playing or $Game/Score.in_progress:
     return
-  print("> target hit!")
   replace_target()
   decrease_count()
   if count == 0:
@@ -96,7 +95,6 @@ func increase_level() -> void:
 func _on_target_missed() -> void:
   if !is_playing:
     return
-  print("> target missed!")
   back_to_()
   level = 0
   count = progression[level]

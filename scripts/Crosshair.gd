@@ -41,16 +41,8 @@ func _target_missed() -> void:
 
 
 func _on_target_area_entered() -> void:
-#  $Body._on_target_area_entered()
   is_inside = true
-  pass
 
 
 func _on_target_area_exited() -> void:
-#  $Body._on_target_area_exited()
   is_inside = false
-  pass
-
-
-func _draw() -> void:
-  draw_circle(position, 25.0, Color.red)
