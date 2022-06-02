@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://sprites/circle.png" type="Texture" id=1]
 [ext_resource path="res://scripts/Lock.gd" type="Script" id=2]
-[ext_resource path="res://icon.png" type="Texture" id=3]
 
 [node name="Lock" type="HBoxContainer"]
 margin_right = 720.0
@@ -27,8 +26,3 @@ stretch_mode = 5
 
 [node name="Center" type="Position2D" parent="Body"]
 position = Vector2( 218.5, 218.5 )
-
-[node name="Sprite" type="Sprite" parent="Body/Center"]
-visible = false
-scale = Vector2( 0.15, 0.15 )
-texture = ExtResource( 3 )
