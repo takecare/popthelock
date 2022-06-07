@@ -124,6 +124,11 @@ scale = Vector2( 0.3, 0.3 )
 
 [connection signal="tapped" from="GUI/HBox/StartButton" to="." method="_on_start_button_tapped"]
 [connection signal="target_entered" from="Game/Target" to="Game/Crosshair" method="_on_target_area_entered"]
+[connection signal="target_entered_left" from="Game/Target" to="." method="_on_target_entered_left"]
+[connection signal="target_entered_right" from="Game/Target" to="." method="_on_target_entered_right"]
 [connection signal="target_exited" from="Game/Target" to="Game/Crosshair" method="_on_target_area_exited"]
+[connection signal="target_exited" from="Game/Target" to="." method="_on_target_exited"]
+[connection signal="target_exited_left" from="Game/Target" to="." method="_on_target_exited_left"]
+[connection signal="target_exited_right" from="Game/Target" to="." method="_on_target_exited_right"]
 [connection signal="on_target_hit" from="Game/Crosshair" to="." method="_on_target_hit"]
 [connection signal="on_target_missed" from="Game/Crosshair" to="." method="_on_target_missed"]

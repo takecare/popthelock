@@ -7,11 +7,12 @@ class_name Target extends "Rotatable.gd"
 # Area2D inherits from Node2D
 
 
-signal target_entered_left
 signal target_entered
 signal target_exited
 signal target_entered_right
-
+signal target_exited_right
+signal target_entered_left
+signal target_exited_left
 
 func _ready() -> void:
   # make sure signals like area_entered and area_exited are emitted
@@ -23,7 +24,6 @@ func _ready() -> void:
 func _on_area_entered_in_target(area: Area2D) -> void:
   emit_signal("target_entered")
 
-
 func _on_area_exited_from_target(area: Area2D) -> void:
   emit_signal("target_exited")
 
@@ -32,12 +32,11 @@ func _on_area_entered_in_left_target(area: Area2D) -> void:
   emit_signal("target_entered_left")
 
 func _on_area_exited_from_left_target(area: Area2D) -> void:
-  pass
+  emit_signal("target_exited_left")
 
 
 func _on_area_entered_in_right_target(area: Area2D) -> void:
   emit_signal("target_entered_right")
 
-
 func _on_area_exited_from_right_target(area: Area2D) -> void:
-  pass
+  emit_signal("target_exited_right")
