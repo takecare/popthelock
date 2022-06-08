@@ -46,3 +46,6 @@ func _on_target_area_entered() -> void:
 
 func _on_target_area_exited() -> void:
   is_inside = false
+
+func get_rotation() -> float:
+  return body.get_rotation()
