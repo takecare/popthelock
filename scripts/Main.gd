@@ -14,7 +14,7 @@ enum CrosshairPosition { Before, EnteredRight, ExitedTarget, EnteredLeft, Exited
 onready var crosshair = $Game/Crosshair
 var crosshair_rotation_direction: int = RotationDirection.CW
 var should_crosshair_rotate: bool = true
-var crosshair_speed: float = .25
+var crosshair_speed: float = 1
 var crosshair_rotation: float = 0
 var crosshair_state = CrosshairPosition.Before
 
@@ -25,8 +25,8 @@ onready var lock_center: Vector2 = lock.center.global_position
 
 export(float) var target_radius = 74 # distance from the lock center
 onready var target: Target = $Game/Target
-var min_angle_deg: float = 35
-var max_angle_deg: float = 65
+export(float) var MIN_ANGLE = 35
+export(float) var MAX_ANGLE = 95
 
 onready var score: Score = $Game/Score
 
@@ -71,13 +71,12 @@ func _on_target_hit() -> void:
 
 func _reposition_target() -> void:
   crosshair_rotation_direction *= -1
+  var min_angle_deg = random.randf_range(MIN_ANGLE, MAX_ANGLE)
+  var max_angle_deg = random.randf_range(MIN_ANGLE, MAX_ANGLE)
   var angle_deg = random.randf_range(min_angle_deg, max_angle_deg)
   print("[", min_angle_deg, ",", max_angle_deg, "] = ", angle_deg) # debug
   var signed_angle = crosshair_rotation_direction * deg2rad(angle_deg)
   target.increase_rotation_around_by(lock_center, signed_angle)
-  var s = 1 if random.randf() > 0.5 else -1
-  min_angle_deg = random.randf_range(25, 90)
-  max_angle_deg = random.randf_range(25, 90)
 
 
 func decrease_count() -> void:
