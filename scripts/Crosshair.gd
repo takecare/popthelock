@@ -42,12 +42,13 @@ func _target_missed() -> void:
   emit_signal("on_target_missed")
 
 
-func _on_target_area_entered() -> void:
+func on_target_area_entered() -> void:
   is_inside = true
 
 
-func _on_target_area_exited() -> void:
+func on_target_area_exited() -> void:
   is_inside = false
+
 
 func get_rotation() -> float:
   return body.get_rotation()

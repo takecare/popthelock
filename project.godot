@@ -39,10 +39,15 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/ScoreLayer.gd"
 }, {
-"base": "",
+"base": "Node2D",
 "class": "Target",
 "language": "GDScript",
 "path": "res://scripts/Target.gd"
+}, {
+"base": "",
+"class": "TargetBody",
+"language": "GDScript",
+"path": "res://scripts/TargetBody.gd"
 } ]
 _global_script_class_icons={
 "Crosshair": "",
@@ -51,7 +56,8 @@ _global_script_class_icons={
 "Lock": "",
 "Score": "",
 "ScoreLayer": "",
-"Target": ""
+"Target": "",
+"TargetBody": ""
 }
 
 [application]

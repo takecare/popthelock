@@ -1,11 +1,4 @@
-class_name Target extends "Rotatable.gd"
-
-# note how Target is an Area2D even though it should be a Node2D. thi is because
-# of how awful gdscript is. CrossairBody needs to be an Area2D but Target does
-# not. if we declare Targe as a Node2D then CrosshairBody will forcefully be a
-# Node2D as well, even though we define it (in the 2D editor) as an Area2D _and_
-# Area2D inherits from Node2D
-
+class_name Target extends Node2D
 
 signal target_entered
 signal target_exited
@@ -14,29 +7,36 @@ signal target_exited_right
 signal target_entered_left
 signal target_exited_left
 
+onready var body := $TargetBody
+
+
 func _ready() -> void:
-  # make sure signals like area_entered and area_exited are emitted
-  $Area2D.monitoring = true
-  $LeftArea2D.monitoring = true
-  $RightArea2D.monitoring = true
+  pass
 
 
-func _on_area_entered_in_target(area: Area2D) -> void:
+func increase_rotation_around_by(point: Vector2, angle: float) -> void:
+  body.increase_rotation_around_by(point, angle)
+
+func reset() -> void:
+  body.reset()
+
+
+func _on_area_entered_in_target() -> void:
   emit_signal("target_entered")
 
-func _on_area_exited_from_target(area: Area2D) -> void:
+func _on_area_exited_from_target() -> void:
   emit_signal("target_exited")
 
 
-func _on_area_entered_in_left_target(area: Area2D) -> void:
+func _on_area_entered_in_left_target() -> void:
   emit_signal("target_entered_left")
 
-func _on_area_exited_from_left_target(area: Area2D) -> void:
+func _on_area_exited_from_left_target() -> void:
   emit_signal("target_exited_left")
 
 
-func _on_area_entered_in_right_target(area: Area2D) -> void:
+func _on_area_entered_in_right_target() -> void:
   emit_signal("target_entered_right")
 
-func _on_area_exited_from_right_target(area: Area2D) -> void:
+func _on_area_exited_from_right_target() -> void:
   emit_signal("target_exited_right")

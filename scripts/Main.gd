@@ -2,7 +2,7 @@ extends Node2D
 
 enum RotationDirection { CW = 1, CCW = -1}
 
-const progression = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] # TODO fill this in
+const progression = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17] # TODO fill this in
 const speed_step = 0.1
 
 export(int) var level = 0
@@ -74,7 +74,6 @@ func _reposition_target() -> void:
   var min_angle_deg = random.randf_range(MIN_ANGLE, MAX_ANGLE)
   var max_angle_deg = random.randf_range(MIN_ANGLE, MAX_ANGLE)
   var angle_deg = random.randf_range(min_angle_deg, max_angle_deg)
-  print("[", min_angle_deg, ",", max_angle_deg, "] = ", angle_deg) # debug
   var signed_angle = crosshair_rotation_direction * deg2rad(angle_deg)
   target.increase_rotation_around_by(lock_center, signed_angle)
 
@@ -101,12 +100,12 @@ func _on_target_missed() -> void:
   count = progression[level]
   crosshair_speed = 1
   score.set_score(count)
-  reset_target()
+  # TODO slowdown crosshair's movement instead of stopping outright
+  should_crosshair_rotate = false
+  #reset_target()
 
 
 func reset_target() -> void:
-  # TODO slowdown crosshair's movement instead of stopping outright
-  should_crosshair_rotate = false
   target.reset()
 
 
@@ -134,7 +133,11 @@ func _on_target_entered_right() -> void:
   elif crosshair_rotation_direction == RotationDirection.CW:
     crosshair_state = CrosshairPosition.EnteredRight
 
+func _on_target_entered() -> void:
+  $Game/Crosshair.on_target_area_entered()
+
 func _on_target_exited() -> void:
+  $Game/Crosshair.on_target_area_exited()
   if crosshair_rotation_direction == RotationDirection.CCW and crosshair_state == CrosshairPosition.ExitedRight:
     _on_target_missed()
   elif crosshair_rotation_direction == RotationDirection.CW and crosshair_state == CrosshairPosition.ExitedLeft:
