@@ -8,12 +8,12 @@ const speed_step = 0.1
 export(int) var level = 0
 export(int) var count = progression[0]
 
-var is_playing: bool = false
+enum PlayState { Demo, Playing, Missed, Stopped }
+var state = PlayState.Demo
 
 enum CrosshairPosition { Before, EnteredRight, ExitedTarget, EnteredLeft, ExitedRight, ExitedLeft }
 onready var crosshair = $Game/Crosshair
 var crosshair_rotation_direction: int = RotationDirection.CW
-var should_crosshair_rotate: bool = true
 var crosshair_speed: float = 1
 var crosshair_rotation: float = 0
 var crosshair_state = CrosshairPosition.Before
@@ -40,14 +40,19 @@ func _ready() -> void:
   random.randomize()
   _reposition_target()
   # debug:
-  yield(get_tree().create_timer(0.2), "timeout")
-  _on_start_button_tapped($GUI/HBox/StartButton)
+  #yield(get_tree().create_timer(0.2), "timeout")
+  #_on_start_button_tapped($GUI/HBox/StartButton)
 
 
 func _process(delta: float) -> void:
-  if not should_crosshair_rotate:
-    return
-  _move_crosshair(delta)
+  if state == PlayState.Playing or state == PlayState.Demo:
+    _move_crosshair(delta)
+  elif state == PlayState.Missed:
+    crosshair_speed -= speed_step / 2
+    if crosshair_speed <= 0:
+      _game_over()
+    else:
+      _move_crosshair(delta)
 
 
 func _move_crosshair(delta: float) -> void:
@@ -61,7 +66,7 @@ func _physics_process(_delta: float) -> void:
 
 
 func _on_target_hit() -> void:
-  if !is_playing or $Game/Score.in_progress:
+  if state != PlayState.Playing or $Game/Score.in_progress:
     return
   _reposition_target()
   decrease_count()
@@ -93,16 +98,18 @@ func increase_level() -> void:
 
 
 func _on_target_missed() -> void:
-  if !is_playing:
+  if state != PlayState.Playing:
     return
+  state = PlayState.Missed
+
+
+func _game_over() -> void:
+  state = PlayState.Stopped
   _back_to_menu()
   level = 0
   count = progression[level]
   crosshair_speed = 1
   score.set_score(count)
-  # TODO slowdown crosshair's movement instead of stopping outright
-  should_crosshair_rotate = false
-  #reset_target()
 
 
 func reset_target() -> void:
@@ -112,13 +119,13 @@ func reset_target() -> void:
 func _on_start_button_tapped(origin: FadeButton) -> void:
   origin.fade_out()
   camera.zoom_in()
-  is_playing = true
+  state = PlayState.Playing
 
 
 func _back_to_menu() -> void:
   start_button.fade_in()
   camera.zoom_out()
-  is_playing = false
+  state = PlayState.Stopped
 
 
 func _on_target_entered_left() -> void:
