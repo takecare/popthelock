@@ -123,6 +123,7 @@ position = Vector2( 360, 456 )
 scale = Vector2( 0.3, 0.3 )
 
 [connection signal="tapped" from="GUI/HBox/StartButton" to="." method="_on_start_button_tapped"]
+[connection signal="disappeared" from="Game/Target" to="." method="_target_disappeared"]
 [connection signal="target_entered" from="Game/Target" to="." method="_on_target_entered"]
 [connection signal="target_entered_left" from="Game/Target" to="." method="_on_target_entered_left"]
 [connection signal="target_entered_right" from="Game/Target" to="." method="_on_target_entered_right"]

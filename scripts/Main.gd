@@ -8,7 +8,13 @@ const speed_step = 0.1
 export(int) var level = 0
 export(int) var count = progression[0]
 
-enum PlayState { Demo, Playing, Missed, Stopped }
+enum PlayState {
+  Demo,
+  Playing,
+  Repositioning,
+  Missed,
+  Stopped
+}
 var state = PlayState.Demo
 
 enum CrosshairPosition { Before, EnteredRight, ExitedTarget, EnteredLeft, ExitedRight, ExitedLeft }
@@ -68,11 +74,16 @@ func _physics_process(_delta: float) -> void:
 func _on_target_hit() -> void:
   if state != PlayState.Playing or $Game/Score.in_progress:
     return
+  state = PlayState.Repositioning
+  $Game/Target.disappear()
+
+func _target_disappeared() -> void:
   _reposition_target()
   decrease_count()
   if count == 0:
     increase_level()
-
+  $Game/Target.appear()
+  state = PlayState.Playing
 
 func _reposition_target() -> void:
   crosshair_rotation_direction *= -1

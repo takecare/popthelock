@@ -7,6 +7,8 @@ signal target_exited_right
 signal target_entered_left
 signal target_exited_left
 
+signal disappeared
+
 onready var body := $TargetBody
 
 
@@ -16,6 +18,15 @@ func _ready() -> void:
 
 func increase_rotation_around_by(point: Vector2, angle: float) -> void:
   body.increase_rotation_around_by(point, angle)
+
+func appear() -> void:
+  $AnimationPlayer.play("appear")
+
+func disappear() -> void:
+  $AnimationPlayer.play("disappear")
+
+func disappeared() -> void:
+  emit_signal("disappeared")
 
 func reset() -> void:
   body.reset()
