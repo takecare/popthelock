@@ -17,7 +17,14 @@ enum PlayState {
 }
 var state = PlayState.Demo
 
-enum CrosshairPosition { Before, EnteredRight, ExitedTarget, EnteredLeft, ExitedRight, ExitedLeft }
+enum CrosshairPosition {
+  Before,
+  EnteredRight,
+  ExitedTarget,
+  EnteredLeft,
+  ExitedRight,
+  ExitedLeft
+}
 onready var crosshair = $Game/Crosshair
 var crosshair_rotation_direction: int = RotationDirection.CW
 var crosshair_speed: float = 1
@@ -44,10 +51,14 @@ func _ready() -> void:
   score.center_on(lock_center)
   score.set_score(count)
   random.randomize()
-  _reposition_target()
+  target.visible = false
   # debug:
   #yield(get_tree().create_timer(0.2), "timeout")
   #_on_start_button_tapped($GUI/HBox/StartButton)
+
+func _fill_progression() -> void:
+  # TODO
+  pass
 
 
 func _process(delta: float) -> void:
@@ -72,18 +83,20 @@ func _physics_process(_delta: float) -> void:
 
 
 func _on_target_hit() -> void:
-  if state != PlayState.Playing or $Game/Score.in_progress:
+  if state != PlayState.Playing or score.in_progress:
     return
   state = PlayState.Repositioning
-  $Game/Target.disappear()
+  target.disappear()
+
 
 func _target_disappeared() -> void:
   _reposition_target()
   decrease_count()
   if count == 0:
     increase_level()
-  $Game/Target.appear()
+  target.appear()
   state = PlayState.Playing
+
 
 func _reposition_target() -> void:
   crosshair_rotation_direction *= -1
@@ -127,9 +140,11 @@ func reset_target() -> void:
   target.reset()
 
 
-func _on_start_button_tapped(origin: FadeButton) -> void:
-  origin.fade_out()
+func _on_start_button_tapped(start_button: FadeButton) -> void:
+  start_button.fade_out()
   camera.zoom_in()
+  target.visible = true
+  _reposition_target()
   state = PlayState.Playing
 
 

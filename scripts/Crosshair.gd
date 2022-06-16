@@ -29,8 +29,6 @@ func _target_hit() -> void:
   is_animating = true
   $AnimationPlayer.connect("animation_finished", self, "_on_hit_animation_ended", [], CONNECT_ONESHOT)
   $AnimationPlayer.play("hit", -1, 1.5)
-  # AnimationPlayer cannot play 2 animations at the same time
-  #$AnimationPlayer.play("rotate_right", -1, 1.5)
   emit_signal("on_target_hit")
 
 
