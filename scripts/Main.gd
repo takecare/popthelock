@@ -2,11 +2,10 @@ extends Node2D
 
 enum RotationDirection { CW = 1, CCW = -1}
 
-const progression = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17] # TODO fill this in
+const progression = []
 const speed_step = 0.1
-
-export(int) var level = 0
-export(int) var count = progression[0]
+var level = 0
+var count = 0
 
 enum PlayState {
   Demo,
@@ -48,6 +47,7 @@ onready var start_button: FadeButton = $GUI/HBox/StartButton
 onready var random: RandomNumberGenerator = RandomNumberGenerator.new()
 
 func _ready() -> void:
+  _fill_progression()
   score.center_on(lock_center)
   score.set_score(count)
   random.randomize()
@@ -57,8 +57,10 @@ func _ready() -> void:
   #_on_start_button_tapped($GUI/HBox/StartButton)
 
 func _fill_progression() -> void:
-  # TODO
-  pass
+  for i in range(1, 100):
+    progression.append(i)
+  count = progression[0]
+  level = 0
 
 
 func _process(delta: float) -> void:
@@ -202,7 +204,10 @@ func _unhandled_key_input(event: InputEventKey) -> void:
     _on_start_button_tapped($GUI/HBox/StartButton)
     get_tree().set_input_as_handled()
   elif event.scancode == KEY_O:
-    # TODO reverse starting animations
+    crosshair_speed += speed_step
+    get_tree().set_input_as_handled()
+  elif event.scancode == KEY_L:
+    crosshair_speed -= speed_step
     get_tree().set_input_as_handled()
   elif event.scancode == KEY_H:
     $Game/Crosshair._target_hit()
