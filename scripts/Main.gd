@@ -126,6 +126,7 @@ func increase_level() -> void:
 func _on_target_missed() -> void:
   if state != PlayState.Playing:
     return
+  $Shaker.shake(1.5, 0.25)
   state = PlayState.Missed
 
 
@@ -219,4 +220,7 @@ func _unhandled_key_input(event: InputEventKey) -> void:
     get_tree().set_input_as_handled()
   elif event.scancode == KEY_M:
     $Game/Crosshair._target_missed()
+    get_tree().set_input_as_handled()
+  elif event.scancode == KEY_S:
+    $Shaker.shake(1.8, 0.25)
     get_tree().set_input_as_handled()

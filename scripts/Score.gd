@@ -107,8 +107,8 @@ func _in_progress() -> bool:
   return $CurrentScoreLayer.in_progress || $NextScoreLayer.in_progress
 
 
-# TODO debug only. remove
-func _unhandled_key_input(event: InputEventKey) -> void:
+# debug only. remove extra _ to use.
+func __unhandled_key_input(event: InputEventKey) -> void:
   if event.echo || event.pressed: return
   if event.scancode == KEY_W:
     increase()
