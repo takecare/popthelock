@@ -2,6 +2,7 @@ class_name FadeButton extends TextureButton
 
 signal tapped(origin) # same as "pressed" but sends a reference to the button
 
+onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 func _ready():
   var _ignored = connect("pressed", self, "_on_pressed")
@@ -15,7 +16,7 @@ func _on_pressed():
 
 
 func fade_out():
-  $AnimationPlayer.play("fade_out")
+  animation_player.play("fade_out")
 
 
 func _on_faded_out():
@@ -25,7 +26,7 @@ func _on_faded_out():
 
 func fade_in():
   show()
-  $AnimationPlayer.play("fade_in")
+  animation_player.play("fade_in")
 
 
 func _on_faded_in():

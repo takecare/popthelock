@@ -1,27 +1,28 @@
 class_name Score extends Node2D
 
 export(int) var score: int setget set_score,get_score
+# warning-ignore:unused_class_variable
 export(bool) var in_progress: bool = false setget ,_in_progress
 
-onready var currentScoreLayer: ScoreLayer = $CurrentScoreLayer
-onready var nextScoreLayer: ScoreLayer = $NextScoreLayer
+onready var current_score_layer: ScoreLayer = $CurrentScoreLayer
+onready var next_score_layer: ScoreLayer = $NextScoreLayer
 
 func _ready() -> void:
-  currentScoreLayer.set_score(score)
-  currentScoreLayer.visible = true
-  nextScoreLayer.visible = false
-  var _result = currentScoreLayer.connect("appeared", self, "_current_appeared")
-  _result = currentScoreLayer.connect("disappeared", self, "_current_disappeared")
-  _result = nextScoreLayer.connect("appeared", self, "_next_appeared")
-  _result = nextScoreLayer.connect("disappeared", self, "_next_disappeared")
+  current_score_layer.set_score(score)
+  current_score_layer.visible = true
+  next_score_layer.visible = false
+  var _result = current_score_layer.connect("appeared", self, "_current_appeared")
+  _result = current_score_layer.connect("disappeared", self, "_current_disappeared")
+  _result = next_score_layer.connect("appeared", self, "_next_appeared")
+  _result = next_score_layer.connect("disappeared", self, "_next_disappeared")
 
 func center_on(_point: Vector2) -> void:
-  currentScoreLayer.center_on(_point)
-  nextScoreLayer.center_on(_point)
+  current_score_layer.center_on(_point)
+  next_score_layer.center_on(_point)
 
 
 func get_score() -> int:
-  return currentScoreLayer.get_score()
+  return current_score_layer.get_score()
 
 
 # state for the current score, it can be
@@ -35,40 +36,40 @@ var mode = Mode.RESTING
 
 func set_score(new: int) -> void:
   # we need to check if it's null because the first time this runs,
-  # currentScoreLayer is not yet set
-  if currentScoreLayer == null:
+  # current_score_layer is not yet set
+  if current_score_layer == null:
     return
-  currentScoreLayer.set_score(new)
+  current_score_layer.set_score(new)
   score = new
 
 
 func next_level(new: int) -> void:
   mode = Mode.NEXT_LEVEL
-  #currentScoreLayer.set_score(new) #currentScoreLayer.animate_to(new)
+  #current_score_layer.set_score(new) #current_score_layer.animate_to(new)
   score = new
 
 
 func increase() -> void:
   mode = Mode.INCREASING
-  nextScoreLayer.set_score(score + 1)
-  currentScoreLayer.disappear()
-  nextScoreLayer.appear()
+  next_score_layer.set_score(score + 1)
+  current_score_layer.disappear()
+  next_score_layer.appear()
 
 
 # ff = fastforward: useful when going from 1 to 0,
 # so we can animate from 0 to NEW quickly
 func decrease(ff: bool = false) -> void:
   mode = Mode.DECREASING
-  nextScoreLayer.set_score(score - 1)
-  currentScoreLayer.disappear(ff)
-  nextScoreLayer.appear(ff)
+  next_score_layer.set_score(score - 1)
+  current_score_layer.disappear(ff)
+  next_score_layer.appear(ff)
 
 
 func reset() -> void:
   # TODO animate counting down until 0
   set_score(0)
-  currentScoreLayer.reset()
-  nextScoreLayer.reset(false)
+  current_score_layer.reset()
+  next_score_layer.reset(false)
 
 
 func _current_appeared() -> void:
@@ -83,17 +84,17 @@ signal handled
 
 
 func _next_appeared() -> void:
-  currentScoreLayer.reset()
-  nextScoreLayer.reset(false)
+  current_score_layer.reset()
+  next_score_layer.reset(false)
   if mode == Mode.NEXT_LEVEL:
-    currentScoreLayer.animate_to(score)
+    current_score_layer.animate_to(score)
     return
-  currentScoreLayer.reset()
+  current_score_layer.reset()
   if mode == Mode.DECREASING:
     set_score(score - 1) # score = score - 1
   else:
     set_score(score + 1) # score = score + 1
-  currentScoreLayer.set_score(score)
+  current_score_layer.set_score(score)
   mode = Mode.RESTING
   emit_signal("handled")
 
@@ -104,7 +105,7 @@ func _next_disappeared() -> void:
 
 # check if any of the layers are currently animating
 func _in_progress() -> bool:
-  return $CurrentScoreLayer.in_progress || $NextScoreLayer.in_progress
+  return current_score_layer.in_progress || next_score_layer.in_progress
 
 
 # debug only. remove extra _ to use.
