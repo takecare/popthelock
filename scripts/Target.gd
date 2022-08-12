@@ -1,29 +1,27 @@
 class_name Target extends Node2D
 
-signal target_entered
-signal target_exited
-signal target_entered_right
-signal target_exited_right
-signal target_entered_left
-signal target_exited_left
+signal target_entered         # something has entered this target
+signal target_exited          # something has left this target
+signal target_entered_right   # something has entered the right side area of this target
+signal target_exited_right    # something has exited the right side area of this target
+signal target_entered_left    # something has entered the left side area of this target
+signal target_exited_left     # something has exited the left side area of this target
 
-signal disappeared
+signal disappeared            # the "disappear" animation has finished playing
 
 onready var body: TargetBody = $TargetBody
-
-
-func _ready() -> void:
-  pass
+onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 
 func increase_rotation_around_by(point: Vector2, angle: float) -> void:
   body.increase_rotation_around_by(point, angle)
 
+
 func appear() -> void:
-  $AnimationPlayer.play("appear")
+  animation_player.play("appear")
 
 func disappear() -> void:
-  $AnimationPlayer.play("disappear")
+  animation_player.play("disappear")
 
 func disappeared() -> void:
   emit_signal("disappeared")

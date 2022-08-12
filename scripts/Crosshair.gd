@@ -1,7 +1,7 @@
 class_name Crosshair extends Node2D
 
-signal on_target_hit
-signal on_target_missed
+signal on_target_hit      # this crosshair has hit the target
+signal on_target_missed   # this crosshair has hit the target
 
 onready var body: CrosshairBody = $Body
 onready var animation_player: AnimationPlayer = $AnimationPlayer

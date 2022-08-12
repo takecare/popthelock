@@ -21,14 +21,12 @@ texture = ExtResource( 1 )
 shape = SubResource( 1 )
 
 [node name="LeftArea2D" type="Area2D" parent="."]
-visible = false
 
 [node name="LeftCollisionShape" type="CollisionShape2D" parent="LeftArea2D"]
 position = Vector2( -152, 0 )
 shape = SubResource( 2 )
 
 [node name="RightArea2D" type="Area2D" parent="."]
-visible = false
 
 [node name="RightCollisionShape" type="CollisionShape2D" parent="RightArea2D"]
 position = Vector2( 152, 0 )
