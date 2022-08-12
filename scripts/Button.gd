@@ -4,7 +4,7 @@ signal tapped(origin) # same as "pressed" but sends a reference to the button
 
 
 func _ready():
-  connect("pressed", self, "_on_pressed")
+  var _ignored = connect("pressed", self, "_on_pressed")
   visible = true
   disabled = false
   modulate = Color(1, 1, 1, 1)

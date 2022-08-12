@@ -7,7 +7,7 @@
 [sub_resource type="Animation" id=1]
 resource_name = "rotate_left"
 tracks/0/type = "value"
-tracks/0/path = NodePath("Body/SmallerSprite:rotation_degrees")
+tracks/0/path = NodePath("CrosshairBody/SmallerSprite:rotation_degrees")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -22,7 +22,7 @@ tracks/0/keys = {
 [sub_resource type="Animation" id=2]
 resource_name = "rotate_right"
 tracks/0/type = "value"
-tracks/0/path = NodePath("Body/SmallerSprite:rotation_degrees")
+tracks/0/path = NodePath("CrosshairBody/SmallerSprite:rotation_degrees")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -37,7 +37,7 @@ tracks/0/keys = {
 [node name="Crosshair" type="Node2D"]
 script = ExtResource( 2 )
 
-[node name="Body" parent="." instance=ExtResource( 1 )]
+[node name="CrosshairBody" parent="." instance=ExtResource( 1 )]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/hit = ExtResource( 4 )

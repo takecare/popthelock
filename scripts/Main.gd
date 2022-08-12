@@ -17,7 +17,7 @@ enum PlayState {
 var state = PlayState.Demo
 
 enum CrosshairPosition {
-  Before,
+  Before,         # initial state
   EnteredRight,
   ExitedTarget,
   EnteredLeft,
