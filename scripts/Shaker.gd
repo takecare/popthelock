@@ -1,4 +1,4 @@
-extends Node2D
+class_name Shaker extends Node2D
 
 export(NodePath) var camera_path
 var camera: Camera2D

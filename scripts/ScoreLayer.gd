@@ -27,8 +27,8 @@ const sprites = [
 
 func _ready() -> void:
   # reset aniamted properties so it doesn't matter in which position the animation is in (in the editor)
-  $HBoxContainer.rect_scale = Vector2(1, 1)
-  $HBoxContainer.modulate = Color(1, 1, 1, 1)
+  hBoxContainer.rect_scale = Vector2(1, 1)
+  hBoxContainer.modulate = Color(1, 1, 1, 1)
   update()
 
 

@@ -13,12 +13,15 @@ signal target_exited_right
 signal target_entered_left
 signal target_exited_left
 
+onready var area2d: Area2D = $Area2D
+onready var left_area2d: Area2D = $LeftArea2D
+onready var right_area2d: Area2D = $RightArea2D
 
 func _ready() -> void:
   # make sure signals like area_entered and area_exited are emitted
-  $Area2D.monitoring = true
-  $LeftArea2D.monitoring = true
-  $RightArea2D.monitoring = true
+  area2d.monitoring = true
+  left_area2d.monitoring = true
+  right_area2d.monitoring = true
 
 
 func _on_area_entered_in_target(area: Area2D) -> void:

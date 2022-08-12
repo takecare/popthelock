@@ -1,6 +1,6 @@
-extends Camera2D
+class_name ZoomCamera extends Camera2D
 
-onready var animationPlayer: AnimationPlayer = $AnimationPlayer
+onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 
 func _ready() -> void:
@@ -8,7 +8,7 @@ func _ready() -> void:
 
 
 func zoom_in() -> void:
-  animationPlayer.play("ZoomIn")
+  animation_player.play("ZoomIn")
 
 
 func _on_zoomed_in() -> void:
@@ -20,4 +20,4 @@ func _on_zoomed_in() -> void:
 
 
 func zoom_out() -> void:
-  animationPlayer.play_backwards("ZoomIn")
+  animation_player.play_backwards("ZoomIn")

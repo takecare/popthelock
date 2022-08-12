@@ -9,7 +9,7 @@ signal target_exited_left
 
 signal disappeared
 
-onready var body := $TargetBody
+onready var body: TargetBody = $TargetBody
 
 
 func _ready() -> void:

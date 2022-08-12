@@ -3,7 +3,8 @@ class_name Crosshair extends Node2D
 signal on_target_hit
 signal on_target_missed
 
-onready var body := $Body
+onready var body: CrosshairBody = $Body
+onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 var is_animating: bool = false
 var is_inside: bool = false
@@ -27,12 +28,13 @@ func _physics_process(_delta: float) -> void:
 
 func _target_hit() -> void:
   is_animating = true
-  $AnimationPlayer.connect("animation_finished", self, "_on_hit_animation_ended", [], CONNECT_ONESHOT)
-  $AnimationPlayer.play("hit", -1, 1.5)
+  var _ignored = animation_player.connect("animation_finished", self, "_on_hit_animation_ended", [], CONNECT_ONESHOT)
+
+  animation_player.play("hit", -1, 1.5)
   emit_signal("on_target_hit")
 
 
-func _on_hit_animation_ended(animation_name: String) -> void:
+func _on_hit_animation_ended(_animation_name: String) -> void:
   is_animating = false
 
 

@@ -24,27 +24,27 @@ enum CrosshairPosition {
   ExitedRight,
   ExitedLeft
 }
-onready var crosshair = $Game/Crosshair
+onready var crosshair: Crosshair = $Game/Crosshair
 var crosshair_rotation_direction: int = RotationDirection.CW
 var crosshair_speed: float = 1
 var crosshair_rotation: float = 0
 var crosshair_state = CrosshairPosition.Before
 
-onready var camera: Camera2D = $Camera
+onready var camera: ZoomCamera = $Camera
 
 onready var lock: Lock = $Game/Lock
 onready var lock_center: Vector2 = lock.center.global_position
 
-export(float) var target_radius = 74 # distance from the lock center
+#export(float) var target_radius = 74.0 # distance from the lock center
 onready var target: Target = $Game/Target
-export(float) var MIN_ANGLE = 35
-export(float) var MAX_ANGLE = 95
+export(float) var MIN_ANGLE = 35.0
+export(float) var MAX_ANGLE = 95.0
 
 onready var score: Score = $Game/Score
-
 onready var start_button: FadeButton = $GUI/HBox/StartButton
-
 onready var random: RandomNumberGenerator = RandomNumberGenerator.new()
+onready var shaker: Shaker = $Shaker
+
 
 func _ready() -> void:
   _fill_progression()
@@ -126,7 +126,7 @@ func increase_level() -> void:
 func _on_target_missed() -> void:
   if state != PlayState.Playing:
     return
-  $Shaker.shake(1.5, 0.25)
+  shaker.shake(1.5, 0.25)
   state = PlayState.Missed
 
 
@@ -143,8 +143,8 @@ func reset_target() -> void:
   target.reset()
 
 
-func _on_start_button_tapped(start_button: FadeButton) -> void:
-  start_button.fade_out()
+func _on_start_button_tapped(button: FadeButton) -> void:
+  button.fade_out()
   camera.zoom_in()
   target.visible = true
   _reposition_target()
@@ -163,27 +163,32 @@ func _on_target_entered_left() -> void:
   elif crosshair_rotation_direction == RotationDirection.CW:
     crosshair_state = CrosshairPosition.EnteredLeft
 
+
 func _on_target_entered_right() -> void:
   if crosshair_rotation_direction == RotationDirection.CCW:
     crosshair_state = CrosshairPosition.EnteredRight
   elif crosshair_rotation_direction == RotationDirection.CW:
     crosshair_state = CrosshairPosition.EnteredRight
 
+
 func _on_target_entered() -> void:
-  $Game/Crosshair.on_target_area_entered()
+  crosshair.on_target_area_entered()
+
 
 func _on_target_exited() -> void:
-  $Game/Crosshair.on_target_area_exited()
+  crosshair.on_target_area_exited()
   if crosshair_rotation_direction == RotationDirection.CCW and crosshair_state == CrosshairPosition.ExitedRight:
     _on_target_missed()
   elif crosshair_rotation_direction == RotationDirection.CW and crosshair_state == CrosshairPosition.ExitedLeft:
     _on_target_missed()
+
 
 func _on_target_exited_left() -> void:
   if crosshair_rotation_direction == RotationDirection.CCW:
     crosshair_state = CrosshairPosition.ExitedLeft
   elif crosshair_rotation_direction == RotationDirection.CW:
     crosshair_state = CrosshairPosition.ExitedLeft
+
 
 func _on_target_exited_right() -> void:
   if crosshair_rotation_direction == RotationDirection.CCW:
@@ -211,7 +216,7 @@ func _unhandled_key_input(event: InputEventKey) -> void:
     crosshair_speed -= speed_step
     get_tree().set_input_as_handled()
   elif event.scancode == KEY_H:
-    $Game/Crosshair._target_hit()
+    crosshair._target_hit()
     get_tree().set_input_as_handled()
   elif event.scancode == KEY_Y:
     _on_target_hit()
@@ -219,8 +224,8 @@ func _unhandled_key_input(event: InputEventKey) -> void:
     _on_target_hit()
     get_tree().set_input_as_handled()
   elif event.scancode == KEY_M:
-    $Game/Crosshair._target_missed()
+    crosshair._target_missed()
     get_tree().set_input_as_handled()
   elif event.scancode == KEY_S:
-    $Shaker.shake(1.8, 0.25)
+    shaker.shake(1.8, 0.25)
     get_tree().set_input_as_handled()
