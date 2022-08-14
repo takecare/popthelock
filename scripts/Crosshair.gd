@@ -12,18 +12,25 @@ var is_inside: bool = false
 func _ready() -> void:
   pass
 
-
 func increase_rotation_around_by(point: Vector2, angle: float) -> void:
   body.increase_rotation_around_by(point, angle)
 
-
-func _physics_process(_delta: float) -> void:
+func _unhandled_input(_event: InputEvent) -> void:
   if !Input.is_action_just_pressed("click"):
     return
+  print("crosshair unhandled input")
   if is_inside:
     _target_hit()
   else:
     _target_missed()
+
+#func _physics_process(_delta: float) -> void:
+#  if !Input.is_action_just_pressed("click"):
+#    return
+#  if is_inside:
+#    _target_hit()
+#  else:
+#    _target_missed()
 
 
 func _target_hit() -> void:

@@ -2,8 +2,9 @@ extends Node2D
 
 enum RotationDirection { CW = 1, CCW = -1}
 
-const progression = []
+const initial_speed = 0.25 # 1
 const speed_step = 0.1
+var progression = []
 var level = 0
 var count = 0
 
@@ -26,7 +27,7 @@ enum CrosshairPosition {
 }
 onready var crosshair: Crosshair = $Game/Crosshair
 var crosshair_rotation_direction: int = RotationDirection.CW
-var crosshair_speed: float = 1
+var crosshair_speed: float = 0.25
 var crosshair_rotation: float = 0
 var crosshair_state = CrosshairPosition.Before
 
@@ -80,10 +81,6 @@ func _move_crosshair(delta: float) -> void:
   crosshair.increase_rotation_around_by(lock_center, angle)
 
 
-func _physics_process(_delta: float) -> void:
-  pass
-
-
 func _on_target_hit() -> void:
   if state != PlayState.Playing or score.in_progress:
     return
@@ -100,6 +97,7 @@ func _target_disappeared() -> void:
   state = PlayState.Playing
 
 
+# position target ahead of the crosshair
 func _reposition_target() -> void:
   crosshair_rotation_direction *= -1
   var min_angle_deg = random.randf_range(MIN_ANGLE, MAX_ANGLE)
@@ -124,6 +122,7 @@ func increase_level() -> void:
 
 
 func _on_target_missed() -> void:
+  print("> target missed")
   if state != PlayState.Playing:
     return
   shaker.shake(1.5, 0.25)
@@ -132,10 +131,11 @@ func _on_target_missed() -> void:
 
 func _game_over() -> void:
   state = PlayState.Stopped
+  target.monitoring = false
   _back_to_menu()
   level = 0
   count = progression[level]
-  crosshair_speed = 1
+  crosshair_speed = initial_speed
   score.set_score(count)
 
 
@@ -146,6 +146,10 @@ func reset_target() -> void:
 func _on_start_button_tapped(button: FadeButton) -> void:
   button.fade_out()
   camera.zoom_in()
+  _game_start()
+
+func _game_start() -> void:
+  target.monitoring = true
   target.visible = true
   _reposition_target()
   state = PlayState.Playing

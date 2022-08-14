@@ -65,11 +65,9 @@ tracks/1/keys = {
 [node name="Button" type="TextureButton"]
 margin_right = 64.0
 margin_bottom = 64.0
+mouse_default_cursor_shape = 2
 texture_normal = ExtResource( 2 )
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/fade_in = SubResource( 1 )
